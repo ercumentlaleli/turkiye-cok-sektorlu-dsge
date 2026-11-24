@@ -13,7 +13,15 @@ plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 9.5, "axes.edgec
 E = Estimator("2006Q1", "2019Q4")
 BURN = 10000
 import glob
-chains = [np.load(f)[BURN:] for f in sorted(glob.glob("s1_chain*.npy"))]
+chains_all = [np.load(f)[BURN:] for f in sorted(glob.glob("s1_chain*.npy"))]
+# Posterior iki tepelidir: A (geçici maliyet şoku, ρcp düşük, θH ≈ 0,87) ve B (ρcp ≈ 0,99, θH ≈ 0,66).
+# Laplace yaklaşımıyla olasılık kütlesinin ~%87'si A'dadır; RWMH tepeler arasında güvenilir geçiş yapamadığından
+# (zincirlerde B payı %17–62) ana sonuçlar A tepesine koşullu raporlanır; B tepesi özet dosyasında ayrıca verilir.
+IRC = E.names.index("rho_cp"); CUT = 0.75
+chains = [c[c[:, IRC] < CUT] for c in chains_all]
+chainsB = [c[c[:, IRC] >= CUT] for c in chains_all]
+modeB = {"zincir_B_payi": [round(float(np.mean(c[:, IRC] >= CUT)), 3) for c in chains_all],
+         "B_ortalama": {nm: round(float(np.vstack(chainsB)[:, k].mean()), 3) for k, nm in enumerate(E.names)}}
 draws = np.vstack(chains); R = rhat(chains)
 old = pd.read_csv("posterior_table.csv", index_col=0)
 rows = []
@@ -115,6 +123,7 @@ fig.tight_layout(); fig.savefig("s1_3_tarihsel_enflasyon.png", dpi=150); plt.clo
 summ = {"fevd4": {vl: {gl: round(100 * FV[4][IX[v], gi(gs)].sum(), 1) for gl, gs in GROUPS} for v, vl in fvv},
         "fevd20": {vl: {gl: round(100 * FV[20][IX[v], gi(gs)].sum(), 1) for gl, gs in GROUPS} for v, vl in fvv},
         "irf_peak": {s: {v: float(np.median(m * np.array(irfs[s])[:, :, IX[v]], 0)[np.argmax(np.abs(np.median(m * np.array(irfs[s])[:, :, IX[v]], 0)))]) for v, m, _ in VS} for s, _ in SHS},
+        "mod_B": modeB,
         "sm_shock_std": dict(zip(SHOCKS, eps.std(0).round(2).tolist())),
         "hd_pi": {d: {gl: round(4 * contrib[gi(gs), dates.index(d), k].sum(), 2) for gl, gs in GROUPS}
                   for d in ["2008Q2", "2008Q4", "2011Q4", "2014Q4", "2018Q3"]}}

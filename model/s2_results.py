@@ -9,7 +9,8 @@ plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 9.5, "axes.edgec
     "xtick.color": MUTED, "ytick.color": MUTED, "axes.facecolor": SURF, "figure.facecolor": SURF,
     "axes.spines.top": False, "axes.spines.right": False, "axes.grid": True, "grid.color": GRID, "grid.linewidth": 0.6})
 m2 = json.load(open("s2_mode.json")); FREE = m2["names"]; fixed = m2["fixed"]
-ch = [np.load(f"s2_chain{s}.npy")[5000:] for s in (1, 2)]; D2 = np.vstack(ch); R2 = rhat(ch)
+import glob
+ch = [np.load(f)[10000:] for f in sorted(glob.glob("s2_chain*.npy"))]; D2 = np.vstack(ch); R2 = rhat(ch)
 D1 = np.load("s1_draws.npy")
 E1 = Estimator("2006Q1", "2019Q4")
 allp = {p[0]: p for p in default_priors()}

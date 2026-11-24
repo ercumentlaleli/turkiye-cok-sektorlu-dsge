@@ -1,112 +1,112 @@
 {
  "F_first_stage_median": 31.526247832863362,
  "mp_PP": {
-  "ssk_h4": -1.51,
+  "ssk_h4": -2.29,
   "lp_h4": -2.46,
   "lp_h4_se": 2.33,
-  "ssk_h8": -1.68,
+  "ssk_h8": -2.51,
   "lp_h8": -2.12,
   "lp_h8_se": 2.77
  },
  "mp_IP": {
-  "ssk_h4": -0.37,
+  "ssk_h4": -0.41,
   "lp_h4": -0.83,
   "lp_h4_se": 1.28,
-  "ssk_h8": -0.05,
+  "ssk_h8": -0.0,
   "lp_h8": -4.2,
   "lp_h8_se": 1.68
  },
  "oil_PP": {
-  "ssk_h4": 0.7,
+  "ssk_h4": 0.58,
   "lp_h4": 1.37,
   "lp_h4_se": 0.59,
-  "ssk_h8": 0.64,
+  "ssk_h8": 0.5,
   "lp_h8": 1.16,
   "lp_h8_se": 0.98
  },
  "oil_IP": {
-  "ssk_h4": 0.03,
+  "ssk_h4": -0.07,
   "lp_h4": 0.34,
   "lp_h4_se": 0.5,
-  "ssk_h8": 0.0,
+  "ssk_h8": -0.05,
   "lp_h8": -0.72,
   "lp_h8_se": 0.54
  },
  "kesit": {
   "mp_PP_h2": {
-   "spearman": 0.57,
+   "spearman": 0.55,
    "perm_p": 0.002,
    "isaret_uyumu": 0.76
   },
   "mp_PP_h4": {
-   "spearman": 0.53,
+   "spearman": 0.54,
    "perm_p": 0.004,
    "isaret_uyumu": 0.96
   },
   "mp_PP_h8": {
-   "spearman": 0.31,
-   "perm_p": 0.065,
+   "spearman": 0.28,
+   "perm_p": 0.092,
    "isaret_uyumu": 0.76
   },
   "mp_IP_h2": {
-   "spearman": 0.27,
-   "perm_p": 0.107,
+   "spearman": 0.29,
+   "perm_p": 0.093,
    "isaret_uyumu": 0.6
   },
   "mp_IP_h4": {
-   "spearman": 0.14,
-   "perm_p": 0.26,
+   "spearman": 0.1,
+   "perm_p": 0.325,
    "isaret_uyumu": 0.64
   },
   "mp_IP_h8": {
-   "spearman": 0.0,
-   "perm_p": 0.493,
-   "isaret_uyumu": 0.76
+   "spearman": -0.13,
+   "perm_p": 0.739,
+   "isaret_uyumu": 0.56
   },
   "oil_PP_h2": {
-   "spearman": 0.69,
+   "spearman": 0.68,
    "perm_p": 0.0,
-   "isaret_uyumu": 0.8
+   "isaret_uyumu": 0.72
   },
   "oil_PP_h4": {
-   "spearman": 0.6,
+   "spearman": 0.59,
    "perm_p": 0.001,
-   "isaret_uyumu": 0.84
+   "isaret_uyumu": 0.76
   },
   "oil_PP_h8": {
-   "spearman": 0.53,
-   "perm_p": 0.004,
-   "isaret_uyumu": 0.8
+   "spearman": 0.46,
+   "perm_p": 0.011,
+   "isaret_uyumu": 0.68
   },
   "oil_IP_h2": {
-   "spearman": 0.38,
-   "perm_p": 0.029,
-   "isaret_uyumu": 0.88
+   "spearman": 0.32,
+   "perm_p": 0.058,
+   "isaret_uyumu": 0.68
   },
   "oil_IP_h4": {
-   "spearman": -0.08,
-   "perm_p": 0.663,
-   "isaret_uyumu": 0.6
+   "spearman": -0.1,
+   "perm_p": 0.69,
+   "isaret_uyumu": 0.44
   },
   "oil_IP_h8": {
-   "spearman": 0.3,
-   "perm_p": 0.072,
-   "isaret_uyumu": 0.52
+   "spearman": 0.33,
+   "perm_p": 0.051,
+   "isaret_uyumu": 0.56
   }
  },
  "ag_testi": {
   "SSK_petrol_h4": {
    "tum": {
-    "R2_dogrudan": 0.76,
+    "R2_dogrudan": 0.77,
     "R2_ag_dahil": 0.78,
-    "b_dolayli": -3.72,
-    "t_dolayli": -1.28,
-    "F_p": 0.213
+    "b_dolayli": -3.07,
+    "t_dolayli": -1.13,
+    "F_p": 0.272
    },
    "C19_haric": {
-    "R2_dogrudan": 0.09,
-    "R2_ag_dahil": 0.23,
-    "b_dolayli": -23.75,
+    "R2_dogrudan": 0.12,
+    "R2_ag_dahil": 0.25,
+    "b_dolayli": -22.22,
     "t_dolayli": -1.93,
     "F_p": 0.068
    }
@@ -131,32 +131,32 @@
    "tum": {
     "R2_dogrudan": 0.69,
     "R2_ag_dahil": 0.69,
-    "b_dolayli": 0.49,
-    "t_dolayli": 0.21,
-    "F_p": 0.838
+    "b_dolayli": 1.26,
+    "t_dolayli": 0.55,
+    "F_p": 0.586
    },
    "C19_haric": {
-    "R2_dogrudan": 0.21,
-    "R2_ag_dahil": 0.25,
-    "b_dolayli": -11.5,
-    "t_dolayli": -1.11,
-    "F_p": 0.281
+    "R2_dogrudan": 0.25,
+    "R2_ag_dahil": 0.27,
+    "b_dolayli": -8.64,
+    "t_dolayli": -0.86,
+    "F_p": 0.399
    }
   },
   "SSK_faiz_h4": {
    "tum": {
-    "R2_dogrudan": 0.38,
-    "R2_ag_dahil": 0.53,
-    "b_dolayli": -9.76,
-    "t_dolayli": -2.62,
+    "R2_dogrudan": 0.35,
+    "R2_ag_dahil": 0.5,
+    "b_dolayli": -14.81,
+    "t_dolayli": -2.61,
     "F_p": 0.016
    },
    "C19_haric": {
-    "R2_dogrudan": 0.31,
-    "R2_ag_dahil": 0.47,
-    "b_dolayli": -12.63,
-    "t_dolayli": -2.53,
-    "F_p": 0.02
+    "R2_dogrudan": 0.25,
+    "R2_ag_dahil": 0.46,
+    "b_dolayli": -21.27,
+    "t_dolayli": -2.86,
+    "F_p": 0.009
    }
   },
   "LP_faiz_h4": {
@@ -177,18 +177,18 @@
   },
   "SSK_kurprimi_h4": {
    "tum": {
-    "R2_dogrudan": 0.54,
-    "R2_ag_dahil": 0.64,
-    "b_dolayli": 10.96,
-    "t_dolayli": 2.47,
-    "F_p": 0.022
+    "R2_dogrudan": 0.46,
+    "R2_ag_dahil": 0.55,
+    "b_dolayli": 2.96,
+    "t_dolayli": 2.21,
+    "F_p": 0.037
    },
    "C19_haric": {
-    "R2_dogrudan": 0.36,
-    "R2_ag_dahil": 0.56,
-    "b_dolayli": 17.42,
-    "t_dolayli": 3.07,
-    "F_p": 0.006
+    "R2_dogrudan": 0.25,
+    "R2_ag_dahil": 0.49,
+    "b_dolayli": 5.25,
+    "t_dolayli": 3.16,
+    "F_p": 0.005
    }
   }
  }

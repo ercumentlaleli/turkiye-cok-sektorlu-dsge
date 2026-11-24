@@ -19,4 +19,4 @@ if sys.argv[1] == "mode":
     np.save("s2_cov.npy", E.hessian_cov(best))
 else:
     seed = int(sys.argv[3]); m = json.load(open("s2_mode.json")); cov = np.load("s2_cov.npy")
-    E.rwmh(np.array(m["theta"]), cov, 20000, 0.35, seed, f"s2_chain{seed}.npy")
+    E.rwmh(np.array(m["theta"]), cov, int(sys.argv[4]) if len(sys.argv) > 4 else 60000, 0.35, seed, f"s2_chain{seed}.npy")
