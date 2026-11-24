@@ -63,7 +63,7 @@ def default_priors():
         ("dF", 0.5, "beta", 0.5, 0.15), ("rho_w", 0.75, "beta", 0.7, 0.1), ("zeta", 0.8, "gamma", 1.0, 0.5),
         ("om_e", 0.2, "beta", 0.2, 0.05), ("kap_oil", 0.05, "gamma", 0.05, 0.025),
         ("rho_i", 0.85, "beta", 0.75, 0.1), ("phi_pi", 1.85, "gamma", 1.5, 0.25),
-        ("phi_y", 0.15, "gamma", 0.25, 0.1), ("phi_e", 0.11, "gamma", 0.1, 0.05),
+        ("phi_dy", 0.25, "gamma", 0.25, 0.1), ("phi_e", 0.11, "gamma", 0.1, 0.05),
         ("rho_a", 0.7, "beta", 0.7, 0.1), ("rho_d", 0.6, "beta", 0.7, 0.1),
         ("rho_prem", 0.7, "beta", 0.7, 0.1), ("rho_oil", 0.3, "beta", 0.5, 0.2),
         ("rho_ystar", 0.9, "beta", 0.8, 0.1), ("rho_rstar", 0.8, "beta", 0.7, 0.1),

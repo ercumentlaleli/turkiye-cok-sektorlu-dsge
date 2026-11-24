@@ -54,7 +54,7 @@ with st.sidebar:
     phi_pi = st.slider("Enflasyona tepki φπ", 1.05, 3.0, float(round(BASE_P["phi_pi"], 2)), 0.05)
     rho_i = st.slider("Faiz düzleştirme ρᵢ", 0.0, 0.95, float(round(BASE_P["rho_i"], 2)), 0.01)
     phi_e = st.slider("Kura tepki φe", 0.0, 0.5, float(round(BASE_P["phi_e"], 2)), 0.01)
-    phi_y = st.slider("Üretime tepki φy", 0.0, 1.0, float(round(BASE_P["phi_y"], 2)), 0.01)
+    phi_dy = st.slider("Üretim büyümesine tepki φΔy", 0.0, 1.0, float(round(BASE_P["phi_dy"], 2)), 0.01)
 
     st.header("Yapı")
     network = st.checkbox("Girdi-çıktı ağı açık", value=True)
@@ -74,7 +74,7 @@ if calvo_mode == "Ölçekli" and scale == 1.0:
     theta = THETA0
 
 pdict = {}
-for k_, v_ in {"phi_pi": phi_pi, "rho_i": rho_i, "phi_e": phi_e, "phi_y": phi_y}.items():
+for k_, v_ in {"phi_pi": phi_pi, "rho_i": rho_i, "phi_e": phi_e, "phi_dy": phi_dy}.items():
     if abs(v_ - round(BASE_P[k_], 2)) > 1e-9:  # kaydırıcı varsayılanda ise tahmin edilen tam değeri koru
         pdict[k_] = v_
 key_s = (tuple(sorted(pdict.items())), tuple(np.round(theta, 6)), network)
@@ -121,9 +121,9 @@ if shock == "e_m" and abs(ms["cpi"][8]) > 1e-6:
 
 with st.expander("Parametre özeti"):
     st.dataframe(pd.DataFrame({
-        "Parametre": ["φπ", "ρi", "φe", "φy", "Ağ", "Tüketim ağırlıklı θ"],
-        "Temel": [f"{BASE_P['phi_pi']:.3f}", f"{BASE_P['rho_i']:.3f}", f"{BASE_P['phi_e']:.3f}", f"{BASE_P['phi_y']:.3f}", "Açık", f"{THETA_AVG:.3f}"],
-        "Senaryo": [f"{phi_pi:.3f}", f"{rho_i:.3f}", f"{phi_e:.3f}", f"{phi_y:.3f}", "Açık" if network else "Kapalı", f"{float((M.C_DOM * theta).sum()):.3f}"]}),
+        "Parametre": ["φπ", "ρi", "φe", "φΔy", "Ağ", "Tüketim ağırlıklı θ"],
+        "Temel": [f"{BASE_P['phi_pi']:.3f}", f"{BASE_P['rho_i']:.3f}", f"{BASE_P['phi_e']:.3f}", f"{BASE_P['phi_dy']:.3f}", "Açık", f"{THETA_AVG:.3f}"],
+        "Senaryo": [f"{phi_pi:.3f}", f"{rho_i:.3f}", f"{phi_e:.3f}", f"{phi_dy:.3f}", "Açık" if network else "Kapalı", f"{float((M.C_DOM * theta).sum()):.3f}"]}),
         hide_index=True, width="stretch")
 st.caption("Not: Senaryo analizi, makro bloğun diğer parametrelerini 2006–2019 posterior ortalamalarında tutar. Parametre değişikliklerinin "
            "beklentiler üzerinden etkisi modelde tam olarak yer alır (rasyonel beklentiler); ancak sonuçlar modelin varsayımlarına bağlıdır.")

@@ -35,7 +35,7 @@ N = len(VARS)
 
 def base_params():
     t = pd.read_csv(f"{MODEL_DIR}/s1_posterior_table.csv", index_col=0).post_mean.to_dict()
-    p = dict(beta=0.985, phi=2.0, alpha=0.30, chi=0.01, eps=2.0, rho_u=0.5, sd_u=1.0)
+    p = dict(beta=0.985, phi=2.0, alpha=0.30, chi=0.01, eps=2.0, rho_u=0.5, sd_u=1.0, phi_y=0.0, phi_dy=0.0)
     p.update(t)
     return p
 

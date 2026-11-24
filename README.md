@@ -16,7 +16,7 @@ streamlit run streamlit_app.py
 | Sayfa | İçerik |
 |---|---|
 | Şok gezgini | 6 makro ve 32 sektörel şokun sektörel fiyat/üretim ve makro tepkileri. Ağsız modelle karşılaştırma ve CSV indirme içerir. |
-| Senaryo analizi | Para politikası kuralı (φπ, ρᵢ, φe, φy), girdi-çıktı ağı ve sektörel fiyat katılıkları değiştirilerek 150 denklemli model canlı çözülür. Sonuç temel senaryoyla karşılaştırılır. |
+| Senaryo analizi | Para politikası kuralı (φπ, ρᵢ, φe, φΔy), girdi-çıktı ağı ve sektörel fiyat katılıkları değiştirilerek 150 denklemli model canlı çözülür. Sonuç temel senaryoyla karşılaştırılır. |
 | Model sonuçları | Kalibrasyon, Bayesçi tahmin, dönem karşılaştırması, SSK, LP-IV ve çok sektörlü model grafik ve tabloları |
 | Metodoloji | Özet ve teknik notların indirilmesi |
 

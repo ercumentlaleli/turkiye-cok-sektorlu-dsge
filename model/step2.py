@@ -4,7 +4,7 @@ diğer yapısal parametreler 2006–2019 posterior ortalamasında sabit tutulur.
 import sys, json, numpy as np, pandas as pd
 from dsge_est import *
 s1 = pd.read_csv("s1_posterior_table.csv", index_col=0)
-FREE = ["thH", "thF", "dH", "dF", "rho_i", "phi_pi", "phi_y", "phi_e",
+FREE = ["thH", "thF", "dH", "dF", "rho_i", "phi_pi", "phi_dy", "phi_e",
         "sd_a", "sd_d", "sd_prem", "sd_oil", "sd_ystar", "sd_rstar", "sd_m", "sd_cp"]
 allp = {p[0]: p for p in default_priors()}
 pri = [allp[k] for k in FREE]

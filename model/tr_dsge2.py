@@ -47,8 +47,12 @@ BASE = dict(
     chi=0.01,     # borç-elastik risk primi (UIP)
     chi_c=0.0,    # net dış varlığın hanehalkı kredi faizine etkisi (0 = kapalı)
     om_q=1.0,     # UIP'de ileriye dönük kur beklentisi ağırlığı (1 = tam rasyonel; <1 hibrit UIP)
-    rho_i=0.75, phi_pi=1.8, phi_y=0.30, phi_e=0.10,  # para politikası kuralı
-    phi_dy=0.0,   # kuralda çıktı büyümesine (y - y(-1)) tepki (0 = kapalı)
+    rho_i=0.75, phi_pi=1.8, phi_e=0.10,  # para politikası kuralı
+    phi_y=0.0,    # kuralda çıktı düzeyine tepki: kapalı (bkz. not)
+    phi_dy=0.25,  # kuralda çıktı büyümesine (y - y(-1)) tepki (tahmin edilir)
+    # Not: Çıktı düzeyine tepki, net dış varlıkların çok yavaş eridiği şoklarda (dış talep, Brent) GSYH'nin
+    # kalıcı denge düzeyinden uzun süre sapmasını çıktı açığı sayıp enflasyonu on yıllarca sıfırdan uzak
+    # tutuyordu. Büyümeye tepki veren kural veriye aynı ölçüde uyar ve bu sorunu ortadan kaldırır.
     rho_a=0.90, rho_d=0.70, rho_prem=0.80, rho_oil=0.70,
     rho_ystar=0.80, rho_rstar=0.85, rho_m=0.50, rho_cp=0.30,
 )

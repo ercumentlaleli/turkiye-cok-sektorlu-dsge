@@ -22,7 +22,7 @@ for k, (nm, _, typ, pm, ps) in enumerate(E.priors):
                      p95=np.percentile(d, 95), rhat=R[k], onceki_model=old.post_mean.get(nm, np.nan)))
 tab = pd.DataFrame(rows).set_index("param"); tab.to_csv("s1_posterior_table.csv", float_format="%.3f")
 print(tab.round(3).to_string())
-np.save("s1_draws.npy", draws)
+np.save("s1_draws.npy", draws[::10])   # depoda inceltilmiş çekilişler
 theta_mean = draws.mean(0)
 
 GROUPS = [("Arz (verimlilik)", ["e_a"]), ("Yurt içi talep", ["e_d"]), ("Kur primi", ["e_prem", "e_rstar"]),
