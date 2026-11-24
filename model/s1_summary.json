@@ -1,161 +1,161 @@
 {
  "fevd4": {
   "GSYH": {
-   "Arz (verimlilik)": 0.3,
-   "Yurt içi talep": 41.9,
-   "Kur primi": 3.8,
-   "Dış talep (AB-4 öncü gös.)": 1.9,
-   "Para politikası": 12.6,
-   "Brent petrol": 1.5,
-   "Yerli maliyet": 38.0
+   "Arz (verimlilik)": 0.4,
+   "Yurt içi talep": 32.9,
+   "Kur primi": 3.2,
+   "Dış talep (AB-4 öncü gös.)": 1.8,
+   "Para politikası": 11.0,
+   "Brent petrol": 1.7,
+   "Yerli maliyet": 49.2
   },
   "TÜFE enflasyonu": {
    "Arz (verimlilik)": 0.2,
-   "Yurt içi talep": 10.4,
-   "Kur primi": 19.2,
+   "Yurt içi talep": 10.6,
+   "Kur primi": 17.6,
    "Dış talep (AB-4 öncü gös.)": 0.1,
-   "Para politikası": 19.0,
-   "Brent petrol": 3.2,
-   "Yerli maliyet": 47.9
+   "Para politikası": 19.2,
+   "Brent petrol": 3.0,
+   "Yerli maliyet": 49.4
   },
   "Politika faizi": {
    "Arz (verimlilik)": 0.1,
-   "Yurt içi talep": 20.0,
-   "Kur primi": 38.2,
-   "Dış talep (AB-4 öncü gös.)": 0.2,
-   "Para politikası": 10.7,
-   "Brent petrol": 4.4,
-   "Yerli maliyet": 26.3
+   "Yurt içi talep": 20.3,
+   "Kur primi": 35.9,
+   "Dış talep (AB-4 öncü gös.)": 0.1,
+   "Para politikası": 8.5,
+   "Brent petrol": 4.2,
+   "Yerli maliyet": 30.8
   },
   "Reel kur": {
    "Arz (verimlilik)": 0.1,
-   "Yurt içi talep": 5.5,
-   "Kur primi": 67.5,
-   "Dış talep (AB-4 öncü gös.)": 5.8,
-   "Para politikası": 9.9,
+   "Yurt içi talep": 6.0,
+   "Kur primi": 65.7,
+   "Dış talep (AB-4 öncü gös.)": 5.7,
+   "Para politikası": 9.0,
    "Brent petrol": 2.1,
-   "Yerli maliyet": 9.1
+   "Yerli maliyet": 11.3
   }
  },
  "fevd20": {
   "GSYH": {
    "Arz (verimlilik)": 0.6,
-   "Yurt içi talep": 39.6,
-   "Kur primi": 3.7,
-   "Dış talep (AB-4 öncü gös.)": 2.2,
-   "Para politikası": 11.8,
-   "Brent petrol": 2.1,
-   "Yerli maliyet": 40.1
+   "Yurt içi talep": 30.9,
+   "Kur primi": 3.1,
+   "Dış talep (AB-4 öncü gös.)": 2.0,
+   "Para politikası": 10.0,
+   "Brent petrol": 2.2,
+   "Yerli maliyet": 51.3
   },
   "TÜFE enflasyonu": {
    "Arz (verimlilik)": 0.2,
    "Yurt içi talep": 10.5,
-   "Kur primi": 18.6,
-   "Dış talep (AB-4 öncü gös.)": 0.2,
-   "Para politikası": 19.0,
-   "Brent petrol": 3.1,
-   "Yerli maliyet": 48.5
+   "Kur primi": 16.9,
+   "Dış talep (AB-4 öncü gös.)": 0.1,
+   "Para politikası": 18.9,
+   "Brent petrol": 2.9,
+   "Yerli maliyet": 50.5
   },
   "Politika faizi": {
-   "Arz (verimlilik)": 0.1,
-   "Yurt içi talep": 21.8,
-   "Kur primi": 46.2,
-   "Dış talep (AB-4 öncü gös.)": 0.4,
-   "Para politikası": 7.3,
-   "Brent petrol": 5.2,
-   "Yerli maliyet": 18.9
+   "Arz (verimlilik)": 0.2,
+   "Yurt içi talep": 21.6,
+   "Kur primi": 44.1,
+   "Dış talep (AB-4 öncü gös.)": 0.3,
+   "Para politikası": 6.0,
+   "Brent petrol": 5.0,
+   "Yerli maliyet": 22.8
   },
   "Reel kur": {
    "Arz (verimlilik)": 0.1,
-   "Yurt içi talep": 4.9,
-   "Kur primi": 52.5,
-   "Dış talep (AB-4 öncü gös.)": 17.1,
-   "Para politikası": 6.1,
-   "Brent petrol": 13.6,
-   "Yerli maliyet": 5.8
+   "Yurt içi talep": 5.1,
+   "Kur primi": 51.4,
+   "Dış talep (AB-4 öncü gös.)": 16.6,
+   "Para politikası": 5.7,
+   "Brent petrol": 14.0,
+   "Yerli maliyet": 7.2
   }
  },
  "irf_peak": {
   "e_m": {
-   "y": -0.8290027762657266,
-   "pi": -1.5890440782119735,
-   "i": 0.7998462442211107,
-   "q": -2.032676197695689
+   "y": -0.7902398279750612,
+   "pi": -1.738309536687507,
+   "i": 0.7714652550335874,
+   "q": -1.9569718061020787
   },
   "e_rstar": {
-   "y": 0.575710685990789,
-   "pi": 1.773092181592304,
-   "i": 1.1844235279746766,
-   "q": 4.311860337884621
+   "y": 0.5334283133894709,
+   "pi": 1.8245629376329122,
+   "i": 1.246567108695332,
+   "q": 4.359891032532746
   },
   "e_oil": {
-   "y": -0.2805297520772153,
-   "pi": 0.826121879774117,
-   "i": 0.4428227086647868,
-   "q": 1.088791102325149
+   "y": -0.27999540638046005,
+   "pi": 0.7986854607779108,
+   "i": 0.42337829625555085,
+   "q": 1.0888076656200152
   },
   "e_cp": {
-   "y": -1.2637601000332537,
-   "pi": 3.8191518556692925,
-   "i": 1.0083086656329072,
-   "q": -1.3828264792665377
+   "y": -1.3589121686920924,
+   "pi": 3.746237558765408,
+   "i": 0.9672205088900423,
+   "q": -1.3817220194349964
   }
  },
  "sm_shock_std": {
   "e_a": 0.06,
-  "e_d": 0.98,
-  "e_prem": 0.36,
+  "e_d": 1.01,
+  "e_prem": 0.37,
   "e_oil": 1.01,
-  "e_ystar": 0.83,
-  "e_rstar": 0.96,
+  "e_ystar": 0.84,
+  "e_rstar": 0.97,
   "e_m": 0.97,
-  "e_cp": 0.98
+  "e_cp": 0.95
  },
  "hd_pi": {
   "2008Q2": {
    "Arz (verimlilik)": 0.03,
-   "Yurt içi talep": 0.2,
-   "Kur primi": -0.84,
-   "Dış talep (AB-4 öncü gös.)": 0.41,
-   "Para politikası": -1.17,
-   "Brent petrol": 2.6,
-   "Yerli maliyet": 2.07
+   "Yurt içi talep": 0.06,
+   "Kur primi": -0.8,
+   "Dış talep (AB-4 öncü gös.)": 0.35,
+   "Para politikası": -1.06,
+   "Brent petrol": 2.65,
+   "Yerli maliyet": 2.06
   },
   "2008Q4": {
    "Arz (verimlilik)": 0.04,
-   "Yurt içi talep": -1.32,
-   "Kur primi": 1.04,
-   "Dış talep (AB-4 öncü gös.)": 0.83,
-   "Para politikası": -2.68,
-   "Brent petrol": -2.17,
-   "Yerli maliyet": 3.0
+   "Yurt içi talep": -1.66,
+   "Kur primi": 1.17,
+   "Dış talep (AB-4 öncü gös.)": 0.66,
+   "Para politikası": -2.76,
+   "Brent petrol": -2.34,
+   "Yerli maliyet": 3.62
   },
   "2011Q4": {
    "Arz (verimlilik)": -0.02,
-   "Yurt içi talep": -0.22,
+   "Yurt içi talep": -0.19,
    "Kur primi": 0.02,
-   "Dış talep (AB-4 öncü gös.)": 0.49,
-   "Para politikası": 3.52,
-   "Brent petrol": 1.16,
-   "Yerli maliyet": 3.25
+   "Dış talep (AB-4 öncü gös.)": 0.43,
+   "Para politikası": 3.74,
+   "Brent petrol": 1.12,
+   "Yerli maliyet": 3.08
   },
   "2014Q4": {
    "Arz (verimlilik)": 0.0,
-   "Yurt içi talep": 1.15,
-   "Kur primi": -3.62,
-   "Dış talep (AB-4 öncü gös.)": 0.13,
-   "Para politikası": -0.74,
-   "Brent petrol": -0.77,
-   "Yerli maliyet": -0.51
+   "Yurt içi talep": 1.2,
+   "Kur primi": -3.79,
+   "Dış talep (AB-4 öncü gös.)": 0.14,
+   "Para politikası": -0.82,
+   "Brent petrol": -0.81,
+   "Yerli maliyet": -0.29
   },
   "2018Q3": {
    "Arz (verimlilik)": 0.01,
-   "Yurt içi talep": 0.52,
-   "Kur primi": 9.74,
-   "Dış talep (AB-4 öncü gös.)": 0.23,
-   "Para politikası": 2.13,
-   "Brent petrol": 0.79,
-   "Yerli maliyet": 6.98
+   "Yurt içi talep": 0.49,
+   "Kur primi": 9.95,
+   "Dış talep (AB-4 öncü gös.)": 0.21,
+   "Para politikası": 2.43,
+   "Brent petrol": 0.74,
+   "Yerli maliyet": 6.57
   }
  }
 }
