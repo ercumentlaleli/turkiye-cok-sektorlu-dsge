@@ -1,0 +1,207 @@
+{
+ "karsi_olgusal": {
+  "e_m|base": {
+   "cpi_h4": -1.414,
+   "cpi_h8": -1.478,
+   "cpi_h16": -1.343,
+   "y_cum8": -3.389,
+   "pi_peak": -1.675
+  },
+  "e_m|nonet": {
+   "cpi_h4": -1.335,
+   "cpi_h8": -1.419,
+   "cpi_h16": -1.299,
+   "y_cum8": -3.455,
+   "pi_peak": -1.572
+  },
+  "e_m|homog": {
+   "cpi_h4": -1.845,
+   "cpi_h8": -1.988,
+   "cpi_h16": -1.856,
+   "y_cum8": -2.832,
+   "pi_peak": -2.007
+  },
+  "e_m|nonet_homog": {
+   "cpi_h4": -1.858,
+   "cpi_h8": -1.997,
+   "cpi_h16": -1.854,
+   "y_cum8": -2.813,
+   "pi_peak": -2.021
+  },
+  "e_rstar|base": {
+   "cpi_h4": 0.129,
+   "cpi_h8": 0.106,
+   "cpi_h16": 0.089,
+   "y_cum8": 0.59,
+   "pi_peak": 0.247
+  },
+  "e_rstar|nonet": {
+   "cpi_h4": 0.118,
+   "cpi_h8": 0.095,
+   "cpi_h16": 0.078,
+   "y_cum8": 0.613,
+   "pi_peak": 0.233
+  },
+  "e_rstar|homog": {
+   "cpi_h4": 0.13,
+   "cpi_h8": 0.112,
+   "cpi_h16": 0.1,
+   "y_cum8": 0.587,
+   "pi_peak": 0.188
+  },
+  "e_rstar|nonet_homog": {
+   "cpi_h4": 0.122,
+   "cpi_h8": 0.102,
+   "cpi_h16": 0.089,
+   "y_cum8": 0.602,
+   "pi_peak": 0.182
+  },
+  "e_oil|base": {
+   "cpi_h4": 0.145,
+   "cpi_h8": -0.033,
+   "cpi_h16": -0.289,
+   "y_cum8": -0.049,
+   "pi_peak": 0.772
+  },
+  "e_oil|nonet": {
+   "cpi_h4": 0.073,
+   "cpi_h8": -0.123,
+   "cpi_h16": -0.404,
+   "y_cum8": 0.08,
+   "pi_peak": 0.702
+  },
+  "e_oil|homog": {
+   "cpi_h4": 0.051,
+   "cpi_h8": -0.118,
+   "cpi_h16": -0.385,
+   "y_cum8": 0.188,
+   "pi_peak": 0.255
+  },
+  "e_oil|nonet_homog": {
+   "cpi_h4": -0.014,
+   "cpi_h8": -0.209,
+   "cpi_h16": -0.506,
+   "y_cum8": 0.3,
+   "pi_peak": -0.202
+  }
+ },
+ "dogrulama": {
+  "e_m": {
+   "spearman": 0.51,
+   "p": 0.022,
+   "pearson": 0.62,
+   "ms_ort": -1.36,
+   "ssk_ort": -1.59
+  },
+  "e_oil": {
+   "spearman": 0.78,
+   "p": 0.0,
+   "pearson": 0.88,
+   "ms_ort": 0.28,
+   "ssk_ort": 0.75
+  }
+ },
+ "sektorel_top": {
+  "C10-12": {
+   "ad": "Gıda-içecek-tütün",
+   "cpi_h4": 0.023,
+   "cpi_h4_agyok": 0.0248,
+   "dogrudan": 0.0166,
+   "ag_carpani": 1.3833,
+   "gsyh_cum8": -0.0611,
+   "tuketim_payi": 0.1308,
+   "theta": 0.605
+  },
+  "D35": {
+   "ad": "Elektrik-gaz",
+   "cpi_h4": 0.018,
+   "cpi_h4_agyok": 0.0086,
+   "dogrudan": 0.0103,
+   "ag_carpani": 1.7425,
+   "gsyh_cum8": -0.0444,
+   "tuketim_payi": 0.0452,
+   "theta": 0.544
+  },
+  "A": {
+   "ad": "Tarım",
+   "cpi_h4": 0.0177,
+   "cpi_h4_agyok": 0.0114,
+   "dogrudan": 0.0069,
+   "ag_carpani": 2.5575,
+   "gsyh_cum8": -0.05,
+   "tuketim_payi": 0.0608,
+   "theta": 0.467
+  },
+  "G": {
+   "ad": "Ticaret",
+   "cpi_h4": 0.0167,
+   "cpi_h4_agyok": 0.0172,
+   "dogrudan": 0.0105,
+   "ag_carpani": 1.5904,
+   "gsyh_cum8": -0.0371,
+   "tuketim_payi": 0.1491,
+   "theta": 0.82
+  },
+  "I": {
+   "ad": "Konaklama-yiyecek",
+   "cpi_h4": 0.0119,
+   "cpi_h4_agyok": 0.0155,
+   "dogrudan": 0.0094,
+   "ag_carpani": 1.2698,
+   "gsyh_cum8": -0.0284,
+   "tuketim_payi": 0.1003,
+   "theta": 0.748
+  },
+  "C13-15": {
+   "ad": "Tekstil-giyim-deri",
+   "cpi_h4": 0.0119,
+   "cpi_h4_agyok": 0.0112,
+   "dogrudan": 0.0085,
+   "ag_carpani": 1.3993,
+   "gsyh_cum8": -0.0368,
+   "tuketim_payi": 0.0599,
+   "theta": 0.468
+  },
+  "H": {
+   "ad": "Ulaştırma",
+   "cpi_h4": 0.0093,
+   "cpi_h4_agyok": 0.0092,
+   "dogrudan": 0.0059,
+   "ag_carpani": 1.5726,
+   "gsyh_cum8": -0.0201,
+   "tuketim_payi": 0.0929,
+   "theta": 0.844
+  },
+  "L": {
+   "ad": "Gayrimenkul",
+   "cpi_h4": 0.0063,
+   "cpi_h4_agyok": 0.0078,
+   "dogrudan": 0.0045,
+   "ag_carpani": 1.3923,
+   "gsyh_cum8": -0.0135,
+   "tuketim_payi": 0.101,
+   "theta": 0.875
+  },
+  "C19": {
+   "ad": "Rafine petrol",
+   "cpi_h4": 0.0035,
+   "cpi_h4_agyok": 0.0039,
+   "dogrudan": 0.0016,
+   "ag_carpani": 2.2762,
+   "gsyh_cum8": -0.0151,
+   "tuketim_payi": 0.0235,
+   "theta": 0.163
+  },
+  "OQ": {
+   "ad": "Kamu-eğitim-sağlık",
+   "cpi_h4": 0.0032,
+   "cpi_h4_agyok": 0.0038,
+   "dogrudan": 0.0023,
+   "ag_carpani": 1.3996,
+   "gsyh_cum8": -0.0071,
+   "tuketim_payi": 0.0342,
+   "theta": 0.825
+  }
+ },
+ "ag_payi_ortalama": 0.44
+}

@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.DS_Store
+.streamlit/secrets.toml
+# Büyük MCMC zincirleri (step1.py / mcmc.py ile yeniden üretilir)
+model/chain*.npy
+model/s1_chain*.npy
+model/lp*.npy
+model/*.log
