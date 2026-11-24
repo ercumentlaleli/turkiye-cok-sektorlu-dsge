@@ -53,7 +53,7 @@ def build(p, theta=None, network=True):
     lamF = (1 - p["thF"]) * (1 - b * p["thF"]) / p["thF"]
     # --- makro blok
     eq({("c", 0): 1 + h, ("c", -1): -h, ("c", 1): -1, ("i", 0): (1 - h) / sg, ("prem", 0): p["zeta"] * (1 - h) / sg,
-        ("pi", 1): -(1 - h) / sg, ("d", 0): -1})
+        ("pi", 1): -(1 - h) / sg, ("d", 0): -1, ("nfa", 0): -(1 - h) / sg * p.get("chi_c", 0.0)})
     rw = p["rho_w"]
     eq({("w", 0): 1, ("w", -1): -rw, ("y", 0): -(1 - rw) * ph, ("a", 0): (1 - rw) * ph,
         ("c", 0): -(1 - rw) * sg / (1 - h), ("c", -1): (1 - rw) * sg * h / (1 - h)})
@@ -62,10 +62,13 @@ def build(p, theta=None, network=True):
     eq({("s", 0): 1, ("s", -1): -1, ("piF", 0): -1, ("piH", 0): 1})
     eq({("q", 0): 1, ("psi", 0): -1, ("s", 0): -(1 - ac)})
     eq({("psi", 0): 1, ("psi", -1): -1, ("de", 0): -1, ("piF", 0): 1})
-    eq({("q", 0): 1, ("q", 1): -1, ("i", 0): 1, ("pi", 1): -1, ("rstar", 0): -1, ("prem", 0): -1, ("nfa", 0): p["chi"]})
+    omq = p.get("om_q", 1.0)   # hibrit UIP (1 = tam ileriye dönük)
+    eq({("q", 0): 1, ("q", 1): -omq, ("q", -1): -(1 - omq), ("i", 0): 1, ("pi", 1): -1, ("rstar", 0): -1, ("prem", 0): -1,
+        ("nfa", 0): p["chi"]})
     eq({("y", 0): 1 - al, ("c", 0): -(1 - al), ("s", 0): -al * et * (2 - al), ("psi", 0): -al * et, ("ystar", 0): -al})
     eq({("i", 0): 1, ("i", -1): -p["rho_i"], ("pi", 0): -(1 - p["rho_i"]) * p["phi_pi"],
-        ("y", 0): -(1 - p["rho_i"]) * p["phi_y"], ("de", 0): -(1 - p["rho_i"]) * p["phi_e"], ("m", 0): -1})
+        ("y", 0): -(1 - p["rho_i"]) * (p["phi_y"] + p.get("phi_dy", 0.0)), ("y", -1): (1 - p["rho_i"]) * p.get("phi_dy", 0.0),
+        ("de", 0): -(1 - p["rho_i"]) * p["phi_e"], ("m", 0): -1})
     eq({("nx", 0): 1, ("y", 0): -1, ("c", 0): 1, ("s", 0): al, ("psi", 0): al, ("oil", 0): al * p["om_e"]})
     eq({("nfa", 0): 1, ("nfa", -1): -1 / b, ("nx", 0): -1})
     eq({("rr", 0): 1, ("i", 0): -1, ("pi", 1): 1})

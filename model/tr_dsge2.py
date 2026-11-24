@@ -44,8 +44,11 @@ BASE = dict(
     gam_m=0.25,   # üretimde ithal ara malı payı (ithal girdi bağımlılığı)
     om_e=0.20,    # enerjinin ithalat içindeki payı
     zeta=1.5,     # risk priminin yurt içi kredi faizine geçişi (finansal kanal)
-    chi=0.01,     # borç-elastik risk primi
+    chi=0.01,     # borç-elastik risk primi (UIP)
+    chi_c=0.0,    # net dış varlığın hanehalkı kredi faizine etkisi (0 = kapalı)
+    om_q=1.0,     # UIP'de ileriye dönük kur beklentisi ağırlığı (1 = tam rasyonel; <1 hibrit UIP)
     rho_i=0.75, phi_pi=1.8, phi_y=0.30, phi_e=0.10,  # para politikası kuralı
+    phi_dy=0.0,   # kuralda çıktı büyümesine (y - y(-1)) tepki (0 = kapalı)
     rho_a=0.90, rho_d=0.70, rho_prem=0.80, rho_oil=0.70,
     rho_ystar=0.80, rho_rstar=0.85, rho_m=0.50, rho_cp=0.30,
 )
@@ -73,7 +76,7 @@ def build(p):
     #   Hanehalkının karşılaştığı faiz = politika faizi + zeta * ülke risk primi
     eq({("c", 0): 1 + h, ("c", -1): -h, ("c", 1): -1,
         ("i", 0): (1 - h) / sg, ("prem", 0): p["zeta"] * (1 - h) / sg,
-        ("pi", 1): -(1 - h) / sg, ("d", 0): -1})
+        ("pi", 1): -(1 - h) / sg, ("d", 0): -1, ("nfa", 0): -(1 - h) / sg * p.get("chi_c", 0.0)})
     # 2a Reel ücret (TÜFE cinsinden): w = rho_w*w(-1) + (1-rho_w)*MRS,
     #    MRS = phi*(y-a) + sigma/(1-h)*(c - h c(-1))
     rw = p["rho_w"]
@@ -100,15 +103,17 @@ def build(p):
     eq({("psi", 0): 1, ("psi", -1): -1, ("de", 0): -1, ("piF", 0): 1})
     # (Nominal kur: de = dq + pi, 6-8 numaralı denklemlerden türetilir; ayrıca yazılmaz)
     # 10 UIP (reel, risk primli, borç-elastik)
-    eq({("q", 0): 1, ("q", 1): -1, ("i", 0): 1, ("pi", 1): -1,
+    #    hibrit UIP: E_t q_{t+1} yerine om_q*E_t q_{t+1} + (1-om_q)*q_{t-1}
+    omq = p.get("om_q", 1.0)
+    eq({("q", 0): 1, ("q", 1): -omq, ("q", -1): -(1 - omq), ("i", 0): 1, ("pi", 1): -1,
         ("rstar", 0): -1, ("prem", 0): -1, ("nfa", 0): p["chi"]})
     # 11 Mal piyasası dengesi
     eq({("y", 0): 1 - al, ("c", 0): -(1 - al), ("s", 0): -al * et * (2 - al),
         ("psi", 0): -al * et, ("ystar", 0): -al})
     # 12 Taylor kuralı
     eq({("i", 0): 1, ("i", -1): -p["rho_i"], ("pi", 0): -(1 - p["rho_i"]) * p["phi_pi"],
-        ("y", 0): -(1 - p["rho_i"]) * p["phi_y"], ("de", 0): -(1 - p["rho_i"]) * p["phi_e"],
-        ("m", 0): -1})
+        ("y", 0): -(1 - p["rho_i"]) * (p["phi_y"] + p.get("phi_dy", 0.0)), ("y", -1): (1 - p["rho_i"]) * p.get("phi_dy", 0.0),
+        ("de", 0): -(1 - p["rho_i"]) * p["phi_e"], ("m", 0): -1})
     # 13 Net ihracat (GSYH payı)
     eq({("nx", 0): 1, ("y", 0): -1, ("c", 0): 1, ("s", 0): al, ("psi", 0): al,
         ("oil", 0): al * p["om_e"]})   # enerji ithalat faturası
