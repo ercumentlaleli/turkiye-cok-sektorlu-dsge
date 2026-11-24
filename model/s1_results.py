@@ -12,7 +12,8 @@ plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 9.5, "axes.edgec
 
 E = Estimator("2006Q1", "2019Q4")
 BURN = 10000
-chains = [np.load(f"s1_chain{s}.npy")[BURN:] for s in (1, 2)]
+import glob
+chains = [np.load(f)[BURN:] for f in sorted(glob.glob("s1_chain*.npy"))]
 draws = np.vstack(chains); R = rhat(chains)
 old = pd.read_csv("posterior_table.csv", index_col=0)
 rows = []
