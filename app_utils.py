@@ -84,6 +84,8 @@ def macro_lines(series_list, h_mark=None, height=190):
 
 FOOTNOTE = ("Birimler: sektörel fiyat düzeyi ve TÜFE düzeyi kümülatif % sapma; enflasyon ve politika faizi yıllıklandırılmış puan; "
             "üretim ve GSYH % sapma; reel kur % (+ = TL reel değer kaybı). Faiz şoku etki anında +1 puana, kur primi şoku TL'nin "
-            "reel %1 değer kaybına, Brent şoku +%10'a normalize edilmiştir; diğer makro şoklar 1 standart sapmadır. Sektörel şoklar "
+            "reel %1 değer kaybına, Brent şoku +%10'a, dış talep şoku AB-4 öncü göstergesinin etki anında %1 artışına, yurt içi talep "
+            "şoku özel tüketimin etki anında %1 artışına, yerli maliyet şoku yerli üretici fiyatlarının etki anında %1 artışına "
+            "normalize edilmiştir. Sektörel şoklar "
             "ilgili sektörün marjinal maliyetinde %1'lik, yarı ömrü yaklaşık 1 çeyrek olan artıştır. \"Ağsız model\", sektörlerin yurt içi "
             "ara girdilerini ortalama yerli fiyattan aldığı karşı-olgusaldır.")

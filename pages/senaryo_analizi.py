@@ -15,7 +15,8 @@ THETA0 = M.CALVO.copy()
 THETA_AVG = float((M.C_DOM * THETA0).sum())
 
 AGG = [("e_m", "i1", "Faiz +1 puan"), ("e_rstar", "q1", "Kur primi (TL reel %1 değer kaybı)"), ("e_oil", "oil10", "Brent +%10"),
-       ("e_ystar", None, "Dış talep (AB-4 öncü gös.) +1 std"), ("e_d", None, "Yurt içi talep +1 std"), ("e_cp", None, "Yerli maliyet +1 std")]
+       ("e_ystar", "ystar1", "Dış talep (AB-4 öncü gös.) +%1"), ("e_d", "c1", "Yurt içi talep (tüketim) +%1"),
+       ("e_cp", "piH1", "Yerli maliyet (yerli fiyatlar) +%1")]
 LAB = {s: l for s, l in zip(M.SECT, [
     "Tarım", "Madencilik", "Gıda-içecek-tütün", "Tekstil-giyim-deri", "Ağaç", "Kağıt", "Basım", "Rafine petrol", "Kimya", "Eczacılık",
     "Kauçuk-plastik", "Metalik olm. mineral", "Ana metal", "Fabrikasyon metal", "Elektronik", "Elektrikli teçh.", "Makine (+onarım)",

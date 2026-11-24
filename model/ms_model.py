@@ -121,6 +121,9 @@ def irf(sol, p, shock, H=16, norm=None):
     if norm == "i1": z *= 0.25 / z[0, IX["i"]]
     if norm == "oil10": z *= 10 / z[0, IX["oil"]]
     if norm == "q1": z *= 1 / z[0, IX["q"]]
+    if norm == "ystar1": z *= 1 / z[0, IX["ystar"]]   # dış talep (AB-4 öncü gös.) etki anında +%1
+    if norm == "c1": z *= 1 / z[0, IX["c"]]           # yurt içi talep: özel tüketim etki anında +%1
+    if norm == "piH1": z *= 1 / z[0, IX["piH"]]       # yerli maliyet: yerli üretici fiyatları etki anında +%1
     return z
 
 def summarize(z):

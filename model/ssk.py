@@ -16,8 +16,11 @@ SECT = ["B"] + [f"C{k}" for k in range(10, 33)] + ["D35"]
 PX = ["pi", "de", "doil", "y"]
 QX = ["dy", "dq", "dystar", "doil"]
 SHOCK_SPEC = {"e_m": "Para politikası (+1 puan faiz)", "e_oil": "Brent petrol (+%10)",
-              "e_rstar": "Kur primi (1 std)", "e_ystar": "Dış talep (1 std)", "e_cp": "Yerli maliyet (1 std)",
-              "e_d": "Yurt içi talep (1 std)"}
+              "e_rstar": "Kur primi (TL reel %1 değer kaybı)", "e_ystar": "Dış talep (AB-4 öncü gös.) +%1",
+              "e_cp": "Yerli maliyet (yerli fiyatlar) +%1", "e_d": "Yurt içi talep (tüketim) +%1"}
+# Etki anı normalizasyonu: şok -> (değişken, hedef). Hepsi yüzde/puan, çeyreklik birimlerde.
+NORM = {"e_m": ("i", 0.25), "e_oil": ("doil", 10.0), "e_rstar": ("q", 1.0), "e_ystar": ("ystar", 1.0),
+        "e_d": ("c", 1.0), "e_cp": ("piH", 1.0)}
 HZ = 12
 
 def sector_growth(start="2006Q1", end="2019Q4"):
@@ -39,7 +42,7 @@ def core_irf(P, Q, shock_vec, H=HZ):
     v = lambda k: cur[:, IX[k]]; l = lambda k: lag[:, IX[k]]
     return {"pi": v("pi"), "de": v("de"), "doil": v("oil") - l("oil"), "mc": v("mc"), "y": v("y"),
             "dy": v("y") - l("y"), "dq": v("q") - l("q"), "dystar": v("ystar") - l("ystar"), "rr": v("rr"),
-            "i": v("i")}
+            "i": v("i"), "q": v("q"), "ystar": v("ystar"), "c": v("c"), "piH": v("piH")}
 
 def gls_ar1(y, X, iters=20):
     b = np.linalg.lstsq(X, y, rcond=None)[0]; rho = 0.0
@@ -77,10 +80,8 @@ def run(draws, E, seed=0):
         for sh in SHOCK_SPEC:
             e = np.zeros(len(SHOCKS)); e[SX[sh]] = p["sd_" + sh[2:]]
             ci = core_irf(P, Q, e)
-            if sh == "e_m":   # +1 puan (yıllık) politika faizi etki anında
-                scale = 0.25 / ci["i"][0]; ci = {k: v * scale for k, v in ci.items()}
-            if sh == "e_oil": # Brent etki anında +%10
-                scale = 10 / ci["doil"][0]; ci = {k: v * scale for k, v in ci.items()}
+            nv, tgt = NORM[sh]   # ör. faiz +1 puan (yıllık) = 0,25 çeyreklik; Brent +%10; diğerleri %1
+            scale = tgt / ci[nv][0]; ci = {k: v * scale for k, v in ci.items()}
             irfs[sh] = ci
         lamP, lamQ, r2P, r2Q = [], [], [], []
         for kind, X, names in (("PP", Xp, PX), ("IP", Xq, QX)):

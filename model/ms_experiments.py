@@ -24,8 +24,8 @@ SOL["nonet_homog"] = M.solve(p, theta=theta_h, network=False)
 print({k: (v["n_stable"], round(v["resid"], 12)) for k, v in SOL.items()})
 
 AGG_SHOCKS = [("e_m", "i1", "Faiz +1 puan"), ("e_rstar", "q1", "Kur primi (TL reel %1 değer kaybı)"),
-              ("e_oil", "oil10", "Brent +%10"), ("e_ystar", None, "Dış talep (AB-4 öncü gös.) +1 std"), ("e_d", None, "Yurt içi talep +1 std"),
-              ("e_cp", None, "Yerli maliyet +1 std")]
+              ("e_oil", "oil10", "Brent +%10"), ("e_ystar", "ystar1", "Dış talep (AB-4 öncü gös.) +%1"), ("e_d", "c1", "Yurt içi talep (tüketim) +%1"),
+              ("e_cp", "piH1", "Yerli maliyet (yerli fiyatlar) +%1")]
 RES = {}
 for sh, nm, lab in AGG_SHOCKS:
     RES[sh] = {k: M.summarize(M.irf(SOL[k], p, sh, H, nm)) for k in SOL}
@@ -88,7 +88,7 @@ ax.barh(y, top.ag, left=top.dogrudan, color=ORANGE, height=0.7, edgecolor=SURF, 
 ax.set_yticks(y); ax.set_yticklabels([f"{k} {LAB[k]}" for k in top.index]); ax.grid(axis="y", visible=False)
 for yi, (v, mlt) in enumerate(zip(top.cpi_h4, top.ag_carpani)):
     ax.text(v + 0.002, yi, f"{v:.3f}  (×{mlt:.1f})" if np.isfinite(mlt) and mlt < 50 else f"{v:.3f}", va="center", fontsize=7.8, color=INK2)
-ax.set_xlabel("TÜFE düzeyine etki, 4 çeyrek sonra (puan) — sektörde 1 std'lik (%1) maliyet şoku")
+ax.set_xlabel("TÜFE düzeyine etki, 4 çeyrek sonra (puan) — sektörde %1'lik maliyet şoku")
 ax.legend(frameon=False, fontsize=8.5, labelcolor=INK2, loc="lower right")
 ax.set_title("Hangi sektördeki maliyet şoku enflasyonu en çok etkiler? (parantez: ağ çarpanı)", loc="left", color=INK,
              fontsize=11.5, fontweight="bold")

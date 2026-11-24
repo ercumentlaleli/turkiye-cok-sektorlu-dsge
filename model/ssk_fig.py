@@ -24,13 +24,13 @@ def panel(axes, keys, h, titles, cum=False):
         ax.set_title(t, loc="left", color=INK, fontsize=9.5); ax.grid(axis="y", visible=False)
 fig, axes = plt.subplots(1, 3, figsize=(11, 7.4), sharey=True)
 panel(axes, ["e_m_PP", "e_rstar_PP", "e_oil_PP"], 4,
-      ["Faiz +1 puan", "Kur primi şoku (1 std)", "Brent +%10"])
+      ["Faiz +1 puan", "Kur primi (TL reel %1 değer kaybı)", "Brent +%10"])
 for ax in axes: ax.set_xlabel("Yİ-ÜFE seviyesi, 4 çeyrek sonra (%)")
 fig.suptitle("SSK uydu denklemleri: NACE-2 üretici fiyatı tepkileri (posterior medyan, %68 aralık)", x=0.01, ha="left",
              fontsize=12, color=INK, fontweight="bold")
 fig.tight_layout(rect=(0, 0, 1, 0.96)); fig.savefig("s3_1_ssk_fiyat.png", dpi=150); plt.close(fig)
 fig, axes = plt.subplots(1, 3, figsize=(11, 7.4), sharey=True)
-panel(axes, ["e_m_IP", "e_ystar_IP", "e_d_IP"], 0, ["Faiz +1 puan", "Dış talep (1 std)", "Yurt içi talep (1 std)"])
+panel(axes, ["e_m_IP", "e_ystar_IP", "e_d_IP"], 0, ["Faiz +1 puan", "Dış talep (AB-4 öncü gös.) +%1", "Yurt içi talep (tüketim) +%1"])
 for ax in axes: ax.set_xlabel("Sanayi üretimi, etki anı (%)")
 fig.suptitle("SSK uydu denklemleri: NACE-2 sanayi üretimi tepkileri (posterior medyan, %68 aralık)", x=0.01, ha="left",
              fontsize=12, color=INK, fontweight="bold")
