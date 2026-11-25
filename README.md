@@ -46,7 +46,7 @@ docs/                     Teknik not (56 sayfa) ve şok tanımlaması eki (Word)
 Komutlar depo kökünden çalıştırılır; tüm yollar `model/` klasörüne göredir.
 
 1. `python model/step1.py mode`, ardından dört zincir için `python model/step1.py chain <1-4> 60000` ve `python model/s1_results.py`: tahmin ve sonuçlar. Bu adım uzun sürer, MCMC zincirleri `.gitignore`'dadır. Depoda inceltilmiş posterior çekilişler (`s1_draws.npy`) bulunur.
-2. `python model/step2.py mode`, ardından `python model/step2.py chain 2023Q3 <1-4> 60000` ve `python model/s2_results.py`: dönem karşılaştırması.
+2. `python model/step2.py mode`, ardından `python model/step2.py chain 2023Q3 <1-4> 60000` ve `python model/s2_results.py`: dönem karşılaştırması. Zincirler `.gitignore`'dadır; `s2_results.py` bunları ısınma sonrası 10'da bir inceltip `s2_draws.npy`'ye yazar ve depodaki bu dosyayla da çalışır.
 3. `python model/ssk.py` ve ardından `python model/ssk_fig.py`: sektörel uydu denklemleri.
 4. `python model/lpiv.py` ve ardından `python model/compare.py`: LP-IV sağlaması.
 5. Sırayla `python model/parse_io.py`, `io_agg.py`, `network.py`, `calvo_est.py`, `ms_experiments.py`: çok sektörlü model.

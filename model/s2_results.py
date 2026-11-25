@@ -10,7 +10,12 @@ plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 9.5, "axes.edgec
     "axes.spines.top": False, "axes.spines.right": False, "axes.grid": True, "grid.color": GRID, "grid.linewidth": 0.6})
 m2 = json.load(open("s2_mode.json")); FREE = m2["names"]; fixed = m2["fixed"]
 import glob
-ch = [np.load(f)[10000:] for f in sorted(glob.glob("s2_chain*.npy"))]; D2 = np.vstack(ch); R2 = rhat(ch)
+# Tam zincirler (.gitignore'da) varsa ısınma atılıp 10'da bir inceltilerek s2_draws.npy'ye yazılır;
+# depoda yalnızca inceltilmiş çekilişler (zincir × çekiliş × parametre) tutulur.
+files = sorted(glob.glob("s2_chain*.npy"))
+if files:
+    np.save("s2_draws.npy", np.stack([np.load(f)[10000::10] for f in files]))
+ch = list(np.load("s2_draws.npy")); D2 = np.vstack(ch); R2 = rhat(ch)
 D1 = np.load("s1_draws.npy")
 E1 = Estimator("2006Q1", "2019Q4")
 allp = {p[0]: p for p in default_priors()}

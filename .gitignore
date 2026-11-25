@@ -5,5 +5,6 @@ __pycache__/
 # Büyük MCMC zincirleri (step1.py / mcmc.py ile yeniden üretilir)
 model/chain*.npy
 model/s1_chain*.npy
+model/s2_chain*.npy
 model/lp*.npy
 model/*.log
