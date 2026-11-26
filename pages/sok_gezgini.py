@@ -33,9 +33,9 @@ ghost = np.array([row[h] for row in s["P_nonet"]]) if (isP and ghost_on) else No
 
 # KPI satırı
 k = [("TÜFE düzeyi (%)", m["cpi"][h]), ("TÜFE enflasyonu (yıllık puan)", m["pi"][h]), ("GSYH (%)", m["y"][h]),
-     ("Politika faizi (yıllık puan)", m["i"][h]), ("Reel kur (%)", m["q"][h])]
+     ("Yatırım (%)", m["inv"][h]), ("Politika faizi (yıllık puan)", m["i"][h]), ("Reel kur (%)", m["q"][h])]
 d = decimals([x for _, x in k])
-cols = st.columns(5)
+cols = st.columns(len(k))
 for c, (lab, v) in zip(cols, k):
     c.metric(f"{lab} · {h}. çeyrek", fmt(v, d))
 

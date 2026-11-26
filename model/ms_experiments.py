@@ -25,7 +25,8 @@ print({k: (v["n_stable"], round(v["resid"], 12)) for k, v in SOL.items()})
 
 AGG_SHOCKS = [("e_m", "i1", "Faiz +1 puan"), ("e_rstar", "q1", "Kur primi (TL reel %1 değer kaybı)"),
               ("e_oil", "oil10", "Brent +%10"), ("e_ystar", "ystar1", "Dış talep (AB-4 öncü gös.) +%1"), ("e_d", "c1", "Yurt içi talep (tüketim) +%1"),
-              ("e_cp", "piH1", "Yerli maliyet (yerli fiyatlar) +%1")]
+              ("e_cp", "piH1", "Yerli maliyet (yerli fiyatlar) +%1"), ("e_mu", "inv1", "Yatırım etkinliği (yatırım) +%1"),
+              ("e_nw", "spr1", "Finansal şok (dış finansman primi) +1 puan")]
 RES = {}
 for sh, nm, lab in AGG_SHOCKS:
     RES[sh] = {k: M.summarize(M.irf(SOL[k], p, sh, H, nm)) for k in SOL}
@@ -36,7 +37,7 @@ for k_ in SECT:
 # ---------- Şekil A: sektör x şok ısı haritası (fiyat düzeyi, 4 çeyrek)
 mat = np.array([RES[sh]["base"]["P_level"][4] for sh, _, _ in AGG_SHOCKS]).T
 mat_rel = mat / np.abs(mat).max(0, keepdims=True)
-fig, ax = plt.subplots(figsize=(9.5, 10))
+fig, ax = plt.subplots(figsize=(12, 10))
 im = ax.imshow(mat_rel, cmap="RdBu_r", vmin=-1, vmax=1, aspect="auto")
 for i in range(K):
     for j in range(len(AGG_SHOCKS)):
@@ -123,13 +124,13 @@ for sh, nm, lab in AGG_SHOCKS:
     explorer["shocks"].append(dict(id=sh, label=lab, kind="Makro şok", P=z["P_level"].round(3).T.tolist(), Y=z["y_k"].round(3).T.tolist(),
                                    P_nonet=zn["P_level"].round(3).T.tolist(),
                                    macro=dict(cpi=z["cpi_level"].round(3).tolist(), pi=z["pi"].round(3).tolist(), y=z["y"].round(3).tolist(),
-                                              i=z["i"].round(3).tolist(), q=z["q"].round(3).tolist())))
+                                              i=z["i"].round(3).tolist(), q=z["q"].round(3).tolist(), inv=z["inv"].round(3).tolist())))
 for k_ in SECT:
     sh = f"e_u_{k_}"; z = RES[sh]["base"]; zn = RES[sh]["nonet"]
     explorer["shocks"].append(dict(id=sh, label=f"{k_} {LAB[k_]}: %1 maliyet şoku", kind="Sektörel şok", P=z["P_level"].round(4).T.tolist(),
                                    Y=z["y_k"].round(4).T.tolist(), P_nonet=zn["P_level"].round(4).T.tolist(),
                                    macro=dict(cpi=z["cpi_level"].round(4).tolist(), pi=z["pi"].round(4).tolist(), y=z["y"].round(4).tolist(),
-                                              i=z["i"].round(4).tolist(), q=z["q"].round(4).tolist())))
+                                              i=z["i"].round(4).tolist(), q=z["q"].round(4).tolist(), inv=z["inv"].round(4).tolist())))
 json.dump(explorer, open("explorer_data.json", "w"), ensure_ascii=False)
 summ = {"karsi_olgusal": {f"{a}|{b}": {k: round(float(v), 3) for k, v in d.items()} for (a, b), d in cf_tab.items()},
         "dogrulama": val, "sektorel_top": SS.head(10)[["ad", "cpi_h4", "cpi_h4_agyok", "dogrudan", "ag_carpani", "gsyh_cum8", "tuketim_payi", "theta"]].round(4).to_dict("index"),

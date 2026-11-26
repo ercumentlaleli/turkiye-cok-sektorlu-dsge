@@ -148,6 +148,8 @@ def irf(sol, p, shock, H=16, norm=None):
     if norm == "ystar1": z *= 1 / z[0, IX["ystar"]]   # dış talep (AB-4 öncü gös.) etki anında +%1
     if norm == "c1": z *= 1 / z[0, IX["c"]]           # yurt içi talep: özel tüketim etki anında +%1
     if norm == "piH1": z *= 1 / z[0, IX["piH"]]       # yerli maliyet: yerli üretici fiyatları etki anında +%1
+    if norm == "inv1": z *= 1 / z[0, IX["inv"]]       # yatırım etkinliği: yatırım etki anında +%1
+    if norm == "spr1": z *= 0.25 / z[0, IX["spr"]]    # finansal şok: dış finansman primi etki anında +1 puan (yıllık)
     return z
 
 def summarize(z):
@@ -155,7 +157,7 @@ def summarize(z):
     pi_k = z[:, [IX[f"pi_{k}"] for k in SECT]]
     return dict(P_level=np.cumsum(pi_k, 0), pi_ann=4 * pi_k, y_k=z[:, [IX[f"y_{k}"] for k in SECT]],
                 cpi_level=np.cumsum(z[:, IX["pi"]]), pi=4 * z[:, IX["pi"]], piH=4 * z[:, IX["piH"]], y=z[:, IX["y"]],
-                i=4 * z[:, IX["i"]], q=z[:, IX["q"]], ygap_va=z[:, [IX[f"y_{k}"] for k in SECT]] @ VA_W)
+                i=4 * z[:, IX["i"]], q=z[:, IX["q"]], inv=z[:, IX["inv"]], spr=4 * z[:, IX["spr"]], ygap_va=z[:, [IX[f"y_{k}"] for k in SECT]] @ VA_W)
 
 if __name__ == "__main__":
     p = base_params(); sol = solve(p)

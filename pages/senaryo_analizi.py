@@ -16,7 +16,8 @@ THETA_AVG = float((M.C_DOM * THETA0).sum())
 
 AGG = [("e_m", "i1", "Faiz +1 puan"), ("e_rstar", "q1", "Kur primi (TL reel %1 değer kaybı)"), ("e_oil", "oil10", "Brent +%10"),
        ("e_ystar", "ystar1", "Dış talep (AB-4 öncü gös.) +%1"), ("e_d", "c1", "Yurt içi talep (tüketim) +%1"),
-       ("e_cp", "piH1", "Yerli maliyet (yerli fiyatlar) +%1")]
+       ("e_cp", "piH1", "Yerli maliyet (yerli fiyatlar) +%1"), ("e_mu", "inv1", "Yatırım etkinliği (yatırım) +%1"),
+       ("e_nw", "spr1", "Finansal şok (dış finansman primi) +1 puan")]
 LAB = {s: l for s, l in zip(M.SECT, [
     "Tarım", "Madencilik", "Gıda-içecek-tütün", "Tekstil-giyim-deri", "Ağaç", "Kağıt", "Basım", "Rafine petrol", "Kimya", "Eczacılık",
     "Kauçuk-plastik", "Metalik olm. mineral", "Ana metal", "Fabrikasyon metal", "Elektronik", "Elektrikli teçh.", "Makine (+onarım)",
@@ -34,7 +35,7 @@ def solve_cached(key):
 def run(key, shock, norm):
     sol, p = solve_cached(key)
     z = M.summarize(M.irf(sol, p, shock, 17, norm))
-    macro = {"cpi": z["cpi_level"], "pi": z["pi"], "y": z["y"], "i": z["i"], "q": z["q"]}
+    macro = {"cpi": z["cpi_level"], "pi": z["pi"], "y": z["y"], "inv": z["inv"], "i": z["i"], "q": z["q"]}
     return z, macro, sol
 
 
@@ -92,9 +93,9 @@ if sol["n_stable"] != M.N:
     st.warning(f"Tekillik koşulu sağlanmıyor: {sol['n_stable']} kararlı kök / {M.N} değişken. Sonuçlar güvenilir değildir.")
 
 st.subheader(shock_lab)
-k = [("TÜFE düzeyi (%)", "cpi"), ("TÜFE enflasyonu (yıllık puan)", "pi"), ("GSYH (%)", "y"), ("Politika faizi (yıllık puan)", "i"), ("Reel kur (%)", "q")]
+k = [("TÜFE düzeyi (%)", "cpi"), ("TÜFE enflasyonu (yıllık puan)", "pi"), ("GSYH (%)", "y"), ("Yatırım (%)", "inv"), ("Politika faizi (yıllık puan)", "i"), ("Reel kur (%)", "q")]
 dd = decimals([ms[c][h] for _, c in k] + [mb[c][h] for _, c in k])
-cols = st.columns(5)
+cols = st.columns(len(k))
 for c, (lab, key) in zip(cols, k):
     c.metric(f"{lab} · {h}. çeyrek", fmt(ms[key][h], dd), delta=fmt(ms[key][h] - mb[key][h], dd) + " temele göre", delta_color="off")
 
