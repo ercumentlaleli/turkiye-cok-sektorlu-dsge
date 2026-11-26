@@ -14,14 +14,11 @@ E = Estimator("2006Q1", "2019Q4")
 BURN = 10000
 import glob
 chains_all = [np.load(f)[BURN:] for f in sorted(glob.glob("s1_chain*.npy"))]
-# Posterior iki tepelidir: A (geçici maliyet şoku, ρcp düşük, θH ≈ 0,87) ve B (ρcp ≈ 0,99, θH ≈ 0,66).
-# Laplace yaklaşımıyla olasılık kütlesinin ~%87'si A'dadır; RWMH tepeler arasında güvenilir geçiş yapamadığından
-# (zincirlerde B payı %17–62) ana sonuçlar A tepesine koşullu raporlanır; B tepesi özet dosyasında ayrıca verilir.
-IRC = E.names.index("rho_cp"); CUT = 0.75
-chains = [c[c[:, IRC] < CUT] for c in chains_all]
-chainsB = [c[c[:, IRC] >= CUT] for c in chains_all]
-modeB = {"zincir_B_payi": [round(float(np.mean(c[:, IRC] >= CUT)), 3) for c in chains_all],
-         "B_ortalama": {nm: round(float(np.vstack(chainsB)[:, k].mean()), 3) for k, nm in enumerate(E.names)}}
+# v3 (yatırım + finansal hızlandırıcı) ile zincirler uyumludur (tüm R-hat < 1,03); tam posterior raporlanır.
+# v2'de görülen ikinci bölge (kalıcı maliyet şoku, düşük θH) posteriorun küçük bir kuyruğu olarak kalır; payı özete yazılır.
+chains = chains_all
+IRC = E.names.index("rho_cp")
+modeB = {"rho_cp_gt_075_payi": [round(float(np.mean(c[:, IRC] > 0.75)), 3) for c in chains_all]}
 draws = np.vstack(chains); R = rhat(chains)
 old = pd.read_csv("posterior_table.csv", index_col=0)
 rows = []
