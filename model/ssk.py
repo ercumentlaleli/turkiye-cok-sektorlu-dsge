@@ -14,7 +14,7 @@ from dsge_est import *
 
 SECT = ["B"] + [f"C{k}" for k in range(10, 33)] + ["D35"]
 PX = ["pi", "de", "doil", "y"]
-QX = ["dy", "dq", "dystar", "doil"]
+QX = ["dy", "dq", "dystar", "doil", "dinv"]   # v3: yatırım büyümesi (yatırım malı talebi kanalı)
 SHOCK_SPEC = {"e_m": "Para politikası (+1 puan faiz)", "e_oil": "Brent petrol (+%10)",
               "e_rstar": "Kur primi (TL reel %1 değer kaybı)", "e_ystar": "Dış talep (AB-4 öncü gös.) +%1",
               "e_cp": "Yerli maliyet (yerli fiyatlar) +%1", "e_d": "Yurt içi talep (tüketim) +%1"}
@@ -33,7 +33,8 @@ def core_vars(xs):
     cur, lag = xs[:, :N], xs[:, N:]
     v = lambda k: cur[:, IX[k]]; l = lambda k: lag[:, IX[k]]
     return {"pi": v("pi"), "de": v("de"), "doil": v("oil") - l("oil"), "mc": v("mc"), "y": v("y"),
-            "dy": v("y") - l("y"), "dq": v("q") - l("q"), "dystar": v("ystar") - l("ystar"), "rr": v("rr")}
+            "dy": v("y") - l("y"), "dq": v("q") - l("q"), "dystar": v("ystar") - l("ystar"), "rr": v("rr"),
+            "dinv": v("inv") - l("inv")}
 
 def core_irf(P, Q, shock_vec, H=HZ):
     z = np.zeros((H + 1, N)); z[1] = Q @ shock_vec          # z[0] = şok öncesi (0)
@@ -42,7 +43,7 @@ def core_irf(P, Q, shock_vec, H=HZ):
     v = lambda k: cur[:, IX[k]]; l = lambda k: lag[:, IX[k]]
     return {"pi": v("pi"), "de": v("de"), "doil": v("oil") - l("oil"), "mc": v("mc"), "y": v("y"),
             "dy": v("y") - l("y"), "dq": v("q") - l("q"), "dystar": v("ystar") - l("ystar"), "rr": v("rr"),
-            "i": v("i"), "q": v("q"), "ystar": v("ystar"), "c": v("c"), "piH": v("piH")}
+            "dinv": v("inv") - l("inv"), "i": v("i"), "q": v("q"), "ystar": v("ystar"), "c": v("c"), "piH": v("piH")}
 
 def gls_ar1(y, X, iters=20):
     b = np.linalg.lstsq(X, y, rcond=None)[0]; rho = 0.0
