@@ -37,16 +37,19 @@ tot = dom_in.sum(0) + imp_en + imp_ne + vak
 w_d = dom_in / tot[None, :]; w_me = imp_en / tot; w_m = imp_ne / tot; w_l = vak / tot
 # Talep payları (yurt içi üretimin kullanımı)
 d_int = Zdk / xk[:, None]                 # δ_kj: k'nin üretiminin j'ye ara girdi olarak giden payı
-s_c = Fdk[:, 0] / xk; s_x = Fdk[:, 7] / xk; s_o = 1 - d_int.sum(1) - s_c - s_x
+s_c = Fdk[:, 0] / xk; s_x = Fdk[:, 7] / xk; s_i = Fdk[:, 4] / xk      # s_i: gayrisafi sabit sermaye oluşumu
+s_o = 1 - d_int.sum(1) - s_c - s_x - s_i                                  # kamu, KAR, stok değişimi
 c_dom = Fdk[:, 0] / Fdk[:, 0].sum()       # yurt içi mallar tüketim sepeti payları
 alpha_c = Fmk[:, 0].sum() / (Fdk[:, 0].sum() + Fmk[:, 0].sum())
+alpha_i = Fmk[:, 4].sum() / (Fdk[:, 4].sum() + Fmk[:, 4].sum())         # yatırımın doğrudan ithal içeriği
+i_dom = Fdk[:, 4] / Fdk[:, 4].sum()                                       # yurt içi yatırım talebinin sektör dağılımı
 va_w = vak / vak.sum()
 out = dict(SECTORS=SECTORS, w_d=w_d.tolist(), w_me=w_me.tolist(), w_m=w_m.tolist(), w_l=w_l.tolist(),
-           d_int=d_int.tolist(), s_c=s_c.tolist(), s_x=s_x.tolist(), s_o=s_o.tolist(), c_dom=c_dom.tolist(),
-           alpha_c=alpha_c, va_w=va_w.tolist(), x=xk.tolist())
+           d_int=d_int.tolist(), s_c=s_c.tolist(), s_x=s_x.tolist(), s_i=s_i.tolist(), s_o=s_o.tolist(), c_dom=c_dom.tolist(),
+           alpha_c=alpha_c, alpha_i=alpha_i, i_dom=i_dom.tolist(), va_w=va_w.tolist(), x=xk.tolist())
 json.dump(out, open(f"{MODEL_DIR}/data/io/io32.json", "w"))
 if __name__ == "__main__":
     df = pd.DataFrame({"yurtici_girdi": w_d.sum(0), "ithal_enerji": w_me, "ithal_diger": w_m, "katma_deger": w_l,
-                       "ara_satis": d_int.sum(1), "hh_tuketim": s_c, "ihracat": s_x, "diger_nihai": s_o,
+                       "ara_satis": d_int.sum(1), "hh_tuketim": s_c, "ihracat": s_x, "yatirim": s_i, "diger_nihai": s_o,
                        "tuketim_sepeti": c_dom, "KD_agirlik": va_w}, index=SECTORS)
-    print(df.round(3).to_string()); print("tüketimde ithal payı:", round(alpha_c, 3))
+    print(df.round(3).to_string()); print("tüketimde ithal payı:", round(alpha_c, 3), "yatırımda ithal payı:", round(alpha_i, 3))

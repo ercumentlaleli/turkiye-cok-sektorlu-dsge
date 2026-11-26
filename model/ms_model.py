@@ -7,7 +7,9 @@ Bouakez-Cardia-Ruge-Murcia (2014) / Pasten-Schoenle-Weber (2020) çizgisinde, T�
  - Makro blok: tahmin edilen genişletilmiş DSGE (Euler, ücret katılığı, ithal fiyat NKPC, UIP+risk primi,
    NFA, Taylor kuralı) — 2006–2019 posterior ortalamaları
  - Yerli enflasyon π_H = Σ ĉ_k π_k (ĉ: G-Ç hanehalkı yurt içi tüketim payları) -> makroya tam geri besleme
- - Sektörel üretim: G-Ç talep sistemi (ara talep + tüketim + ihracat + diğer nihai talep), göreli fiyat esnekliği ε
+ - Sektörel üretim: G-Ç talep sistemi (ara talep + tüketim + ihracat + yatırım + diğer nihai talep), göreli fiyat esnekliği ε
+ - v3: makro blokta yatırım, sermaye birikimi ve finansal hızlandırıcı (tr_dsge3); sektör katma değer maliyetinde
+   sermaye kirası; sektörel üretimde yatırım talebi (G-Ç gayrisafi sabit sermaye oluşumu payları)
 """
 from pathlib import Path
 MODEL_DIR = Path(__file__).resolve().parent  # model/ klasörü
@@ -16,7 +18,7 @@ import numpy as np, json, pandas as pd, scipy.linalg as la
 io = json.load(open(f"{MODEL_DIR}/data/io/io32.json"))
 SECT = io["SECTORS"]; K = len(SECT)
 W_D, W_M, W_ME, W_L = (np.array(io[k]) for k in ("w_d", "w_m", "w_me", "w_l"))
-D_INT, S_C, S_X, S_O = (np.array(io[k]) for k in ("d_int", "s_c", "s_x", "s_o"))
+D_INT, S_C, S_X, S_I, S_O = (np.array(io[k]) for k in ("d_int", "s_c", "s_x", "s_i", "s_o"))
 C_DOM = np.array(io["c_dom"]); ALPHA_C = io["alpha_c"]; VA_W = np.array(io["va_w"])
 # Enerji ağırlığı düzeltmesi: temel fiyatlı G-Ç tüketim payları (vergi/marj hariç) enerjinin TÜFE'deki ağırlığını
 # düşük gösteriyor. D35 payı x2, yurt içi rafine ürün payı x10 -> doğrudan enerji ~%7 (+ ithal enerji ~%1).
@@ -26,16 +28,19 @@ C_DOM = C_DOM.copy(); C_DOM[SECT.index("D35")] *= 2.0; C_DOM[SECT.index("C19")] 
 CALVO = pd.read_csv(f"{MODEL_DIR}/data/io/calvo_sector.csv", index_col=0).loc[SECT, "theta"].values
 
 AGG = ["y", "c", "piH", "piF", "pi", "i", "q", "s", "psi", "de", "w", "nx", "nfa", "rr",
-       "a", "d", "prem", "oil", "ystar", "rstar", "m", "cp"]
+       "inv", "k", "l", "rk", "qk", "rke", "n", "spr",
+       "a", "d", "prem", "oil", "ystar", "rstar", "m", "cp", "mu"]
 VARS = AGG + [f"pi_{k}" for k in SECT] + [f"r_{k}" for k in SECT] + [f"y_{k}" for k in SECT] + [f"u_{k}" for k in SECT]
-SH_AGG = ["e_a", "e_d", "e_prem", "e_oil", "e_ystar", "e_rstar", "e_m", "e_cp"]
+SH_AGG = ["e_a", "e_d", "e_prem", "e_oil", "e_ystar", "e_rstar", "e_m", "e_cp", "e_mu", "e_nw"]
 SHOCKS = SH_AGG + [f"e_u_{k}" for k in SECT]
 IX = {v: i for i, v in enumerate(VARS)}; SX = {s: i for i, s in enumerate(SHOCKS)}
 N = len(VARS)
 
 def base_params():
     t = pd.read_csv(f"{MODEL_DIR}/s1_posterior_table.csv", index_col=0).post_mean.to_dict()
+    import tr_dsge3
     p = dict(beta=0.985, phi=2.0, alpha=0.30, chi=0.01, eps=2.0, rho_u=0.5, sd_u=1.0, phi_y=0.0, phi_dy=0.0)
+    p.update({k: tr_dsge3.BASE[k] for k in ("kap", "delk", "aI", "gam_e", "KN")})
     p.update(t)
     return p
 
@@ -55,7 +60,7 @@ def build(p, theta=None, network=True):
     eq({("c", 0): 1 + h, ("c", -1): -h, ("c", 1): -1, ("i", 0): (1 - h) / sg, ("prem", 0): p["zeta"] * (1 - h) / sg,
         ("pi", 1): -(1 - h) / sg, ("d", 0): -1, ("nfa", 0): -(1 - h) / sg * p.get("chi_c", 0.0)})
     rw = p["rho_w"]
-    eq({("w", 0): 1, ("w", -1): -rw, ("y", 0): -(1 - rw) * ph, ("a", 0): (1 - rw) * ph,
+    eq({("w", 0): 1, ("w", -1): -rw, ("l", 0): -(1 - rw) * ph,
         ("c", 0): -(1 - rw) * sg / (1 - h), ("c", -1): (1 - rw) * sg * h / (1 - h)})
     eq({("piF", 0): 1 + b * p["dF"], ("piF", -1): -p["dF"], ("piF", 1): -b, ("psi", 0): -lamF, ("oil", 0): -lamF * p["om_e"]})
     eq({("pi", 0): 1, ("piH", 0): -(1 - ac), ("piF", 0): -ac})
@@ -65,14 +70,28 @@ def build(p, theta=None, network=True):
     omq = p.get("om_q", 1.0)   # hibrit UIP (1 = tam ileriye dönük)
     eq({("q", 0): 1, ("q", 1): -omq, ("q", -1): -(1 - omq), ("i", 0): 1, ("pi", 1): -1, ("rstar", 0): -1, ("prem", 0): -1,
         ("nfa", 0): p["chi"]})
-    eq({("y", 0): 1 - al, ("c", 0): -(1 - al), ("s", 0): -al * et * (2 - al), ("psi", 0): -al * et, ("ystar", 0): -al})
+    rkss = 1 / b - 1 + p["delk"]; iy = p["delk"] * p["kap"] / rkss; cy = 1 - iy; vpi = 1 - b * (1 - p["delk"])
+    eq({("y", 0): 1 - al, ("c", 0): -(1 - al) * cy, ("inv", 0): -(1 - al) * iy, ("s", 0): -al * et * (2 - al),
+        ("psi", 0): -al * et, ("ystar", 0): -al})
     eq({("i", 0): 1, ("i", -1): -p["rho_i"], ("pi", 0): -(1 - p["rho_i"]) * p["phi_pi"],
         ("y", 0): -(1 - p["rho_i"]) * (p["phi_y"] + p.get("phi_dy", 0.0)), ("y", -1): (1 - p["rho_i"]) * p.get("phi_dy", 0.0),
         ("de", 0): -(1 - p["rho_i"]) * p["phi_e"], ("m", 0): -1})
-    eq({("nx", 0): 1, ("y", 0): -1, ("c", 0): 1, ("s", 0): al, ("psi", 0): al, ("oil", 0): al * p["om_e"]})
+    eq({("nx", 0): 1, ("y", 0): -1, ("c", 0): cy, ("inv", 0): iy, ("s", 0): al, ("psi", 0): al, ("oil", 0): al * p["om_e"]})
     eq({("nfa", 0): 1, ("nfa", -1): -1 / b, ("nx", 0): -1})
     eq({("rr", 0): 1, ("i", 0): -1, ("pi", 1): 1})
-    for v, s_ in zip(["a", "d", "prem", "oil", "ystar", "rstar", "m", "cp"], SH_AGG):
+    # --- yatırım, sermaye ve finansal hızlandırıcı (tr_dsge3 ile aynı; yerli mal/TÜFE dönüşümünde αc)
+    kp, dk, Sk, z, ge, KN = p["kap"], p["delk"], p["Sk"], p["zeta"], p["gam_e"], p["KN"]
+    eq({("y", 0): 1, ("a", 0): -1, ("k", -1): -kp, ("l", 0): -(1 - kp)})
+    eq({("rk", 0): 1, ("w", 0): -1, ("s", 0): -ac, ("l", 0): -1, ("k", -1): 1})
+    eq({("k", 0): 1, ("k", -1): -(1 - dk), ("inv", 0): -dk, ("mu", 0): -dk * (1 + b) * Sk})
+    eq({("inv", 0): 1, ("inv", -1): -1 / (1 + b), ("inv", 1): -b / (1 + b),
+        ("qk", 0): -1 / ((1 + b) * Sk), ("s", 0): (p["aI"] - al) / ((1 + b) * Sk), ("mu", 0): -1})
+    eq({("rke", 0): 1, ("rk", 0): -vpi, ("s", 0): vpi * ac, ("qk", 0): -(1 - vpi), ("qk", -1): 1})
+    eq({("rke", 1): 1, ("i", 0): -1, ("pi", 1): 1, ("prem", 0): -z, ("spr", 0): -1})
+    eq({("spr", 0): 1, ("qk", 0): -p["nu"], ("k", 0): -p["nu"], ("n", 0): p["nu"]})
+    eq({("n", 0): 1, ("rke", 0): -ge * KN, ("i", -1): ge * (KN - 1), ("pi", 0): -ge * (KN - 1),
+        ("prem", -1): ge * (KN - 1) * z, ("spr", -1): ge * (KN - 1), ("n", -1): -ge}, {"e_nw": -1})
+    for v, s_ in zip(["a", "d", "prem", "oil", "ystar", "rstar", "m", "cp", "mu"], SH_AGG):
         eq({(v, 0): 1, (v, -1): -p["rho_" + v]}, {s_: -1})
     # --- yerli fiyat düzeyi normalizasyonu: Σ ĉ_k r_k = 0  (π_H'yi belirler)
     eq({(f"r_{k}", 0): C_DOM[j] for j, k in enumerate(SECT)})
@@ -87,12 +106,14 @@ def build(p, theta=None, network=True):
             for i2, k2 in enumerate(SECT):
                 t[(f"r_{k2}", 0)] = t.get((f"r_{k2}", 0), 0) - lam * W_D[i2, j]
         t[(f"r_{k}", 0)] = t.get((f"r_{k}", 0), 0) + lam
-        t[("psi", 0)] = -lam * (W_M[j] + W_ME[j]); t[("s", 0)] = -lam * (W_M[j] + W_ME[j] + W_L[j] * ac)
-        t[("oil", 0)] = -lam * W_ME[j]; t[("w", 0)] = -lam * W_L[j]; t[("a", 0)] = lam
+        # katma değer maliyeti: (1-kap)*(yerli mal cinsinden ücret) + kap*(sermaye kirası)
+        t[("psi", 0)] = -lam * (W_M[j] + W_ME[j]); t[("s", 0)] = -lam * (W_M[j] + W_ME[j] + W_L[j] * (1 - kp) * ac)
+        t[("oil", 0)] = -lam * W_ME[j]; t[("w", 0)] = -lam * W_L[j] * (1 - kp); t[("rk", 0)] = -lam * W_L[j] * kp
+        t[("a", 0)] = lam
         eq(t)
         eq({(f"pi_{k}", 0): 1, ("piH", 0): -1, (f"r_{k}", 0): -1, (f"r_{k}", -1): 1})
         ty = {(f"y_{k}", 0): 1, ("c", 0): -S_C[j], ("s", 0): -S_C[j] * ac * et - S_X[j] * et, ("psi", 0): -S_X[j] * et,
-              ("ystar", 0): -S_X[j], ("y", 0): -S_O[j], (f"r_{k}", 0): p["eps"] * (S_C[j] + S_X[j])}
+              ("ystar", 0): -S_X[j], ("inv", 0): -S_I[j], ("y", 0): -S_O[j], (f"r_{k}", 0): p["eps"] * (S_C[j] + S_X[j])}
         for i2, k2 in enumerate(SECT):
             ty[(f"y_{k2}", 0)] = ty.get((f"y_{k2}", 0), 0) - D_INT[j, i2]
         eq(ty)

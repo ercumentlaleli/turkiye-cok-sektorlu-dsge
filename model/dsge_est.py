@@ -11,7 +11,7 @@ import numpy as np, pandas as pd
 import scipy.linalg as la
 from scipy import stats, special, optimize
 sys.path.insert(0, str(MODEL_DIR))
-import tr_dsge2 as M
+import tr_dsge3 as M   # v3: yatırım + finansal hızlandırıcı
 
 VARS, SHOCKS, IX, build = M.VARS, M.SHOCKS, M.IX, M.build
 SX = {s: k for k, s in enumerate(SHOCKS)}
@@ -20,20 +20,22 @@ N = len(VARS)
 # ------------------------------------------------------------------ veri
 OBS = [  # (ad, tür, model değişkeni)
     ("dy", "diff", "y"), ("dc", "diff", "c"), ("pi", "level", "pi"), ("i", "level", "i"),
-    ("dq", "diff", "q"), ("doil", "diff", "oil"), ("ystar", "level", "ystar")]
+    ("dq", "diff", "q"), ("doil", "diff", "oil"), ("ystar", "level", "ystar"),
+    ("dinv", "diff", "inv"), ("spread", "spread", None)]   # spread = spr + zeta*prem (firma kredi faizi - politika faizi)
 OBSN = [o[0] for o in OBS]
-ME_SHARE = {"dy": 0.10, "dc": 0.10, "ystar": 0.10}   # sabit ölçüm hatası (veri varyansı payı)
+ME_SHARE = {"dy": 0.10, "dc": 0.10, "ystar": 0.10, "dinv": 0.10, "spread": 0.10}   # sabit ölçüm hatası (veri varyansı payı)
 
 def load_obs(start, end):
     d = pd.read_csv(f"{MODEL_DIR}/data/evds_raw.csv", index_col=0)
     f = pd.read_csv(f"{MODEL_DIR}/data/foreign.csv", index_col=0)
-    d = d.join(f, how="left")
+    d = d.join(f, how="left").join(pd.read_csv(f"{MODEL_DIR}/data/financial.csv", index_col=0), how="left")
     rate = d["aofm"].fillna(d["polrate_bis"])
     obs = pd.DataFrame({
         "dy": 100 * np.log(d["gdp"]).diff(), "dc": 100 * np.log(d["cons"]).diff(),
         "pi": 100 * np.log(d["cpi_sa"]).diff(), "i": rate / 4,
         "dq": -100 * np.log(d["reer"]).diff(), "doil": 100 * np.log(d["brent"]).diff(),
-        "ystar": d["cli_eu4"] - 100}, index=d.index).loc[start:end]
+        "ystar": d["cli_eu4"] - 100, "dinv": 100 * np.log(d["inv"]).diff(),
+        "spread": (d["loan_rate"] - rate) / 4}, index=d.index).loc[start:end]
     means = obs.mean()
     return obs - means, means
 
@@ -71,6 +73,9 @@ def default_priors():
         ("sd_a", 3.0, "invg", 0.5, 4.0), ("sd_d", 0.9, "invg", 0.5, 4.0), ("sd_prem", 0.5, "invg", 0.5, 4.0),
         ("sd_oil", 15.0, "invg", 5.0, 4.0), ("sd_ystar", 0.4, "invg", 0.5, 4.0),
         ("sd_rstar", 0.9, "invg", 0.5, 4.0), ("sd_m", 0.4, "invg", 0.5, 4.0), ("sd_cp", 0.5, "invg", 0.5, 4.0),
+        # v3: yatırım ve finansal hızlandırıcı
+        ("Sk", 4.0, "gamma", 4.0, 1.5), ("nu", 0.05, "gamma", 0.05, 0.02), ("rho_mu", 0.7, "beta", 0.7, 0.1),
+        ("sd_mu", 0.5, "invg", 0.5, 4.0), ("sd_nw", 0.5, "invg", 0.5, 4.0),
     ]
 
 # ------------------------------------------------------------------ çözüm
@@ -125,6 +130,8 @@ class Estimator:
         R = np.zeros((2 * N, len(SHOCKS))); R[:N] = Q * sds
         Z = np.zeros((len(OBS), 2 * N))
         for k, (_, kind, v) in enumerate(OBS):
+            if kind == "spread":
+                Z[k, IX["spr"]] = 1; Z[k, IX["prem"]] = p["zeta"]; continue
             Z[k, IX[v]] = 1
             if kind == "diff": Z[k, N + IX[v]] = -1
         return T, R, Z
