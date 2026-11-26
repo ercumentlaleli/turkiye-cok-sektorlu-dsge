@@ -16,14 +16,17 @@ st.markdown("""
 | 4. LP-IV sağlaması | Yerel projeksiyon, Romer-Romer tipi araç | Aynı sektörel veri | Tutarlılık istatistikleri |
 | 5. Çok sektörlü ağlı model | 32 sektörlü genel denge, tahmin edilen sektörel Calvo parametreleri | TÜİK 2023 girdi-çıktı tabloları | Karşı-olgusal deneyler, şok gezgini |
 
-**Denklem sayıları:** genişletilmiş toplulaştırılmış DSGE 23 denklem (15 yapısal + 8 şok süreci); çok sektörlü model 150 denklem
-(22 makro + 32 sektör × 4). Her iki modelde de denklem sayısı değişken sayısına eşittir ve tekillik koşulu sağlanır.
+**Denklem sayıları:** genişletilmiş toplulaştırılmış DSGE 32 denklem (23 yapısal + 9 şok süreci); çok sektörlü model 159 denklem
+(31 makro + 32 sektör × 4). Her iki modelde de denklem sayısı değişken sayısına eşittir ve tekillik koşulu sağlanır.
 
 **Modelde yer alan başlıca kanallar:** faiz–talep, risk primi–kredi faizi, eksik kur geçişkenliği, ithal ara girdi ve enerji maliyeti,
-girdi-çıktı ağı, sektörel fiyat katılığı heterojenliği, dış talep, net dış varlık–risk primi, ücret katılığı.
+yatırım ve sermaye birikimi (yatırım düzenleme maliyeti, Tobin q, yatırım malının yüksek ithal içeriği), finansal hızlandırıcı
+(girişimci net serveti ve kaldıraca bağlı dış finansman primi), girdi-çıktı ağı, sektörel fiyat katılığı heterojenliği, dış talep,
+net dış varlık–risk primi, ücret katılığı.
 
-**Yer almayan kanallar:** yatırım ve kredi stoku, döviz cinsi borç bilanço etkisi, maliye politikası, beklentilerde öğrenme ve
-güvenilirlik, rezerv ve makroihtiyati araçlar. Bu nedenle üretim tepkileri ve kur primi şokunun kısa vadeli büyüme etkisi temkinle yorumlanmalıdır.
+**Yer almayan kanallar:** döviz cinsi borç bilanço etkisi, banka bilançosu ve kredi arzı, maliye politikası, beklentilerde öğrenme ve
+güvenilirlik, rezerv ve makroihtiyati araçlar. Bu nedenle kur değer kaybının bilanço kaynaklı daraltıcı etkisi ve LP-IV'de görülen büyük
+gecikmeli üretim etkisi modelde eksik kalabilir.
 """)
 
 st.subheader("Dokümanlar")

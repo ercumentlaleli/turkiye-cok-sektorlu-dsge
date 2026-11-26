@@ -47,7 +47,7 @@ def d1():
     return E1.params(D1[rng.integers(len(D1))])
 def d2():
     p = dict(BASE_); p.update(fixed); p.update(dict(zip(FREE, D2[rng.integers(len(D2))]))); return p
-import tr_dsge2; BASE_ = dict(tr_dsge2.BASE)
+import tr_dsge3; BASE_ = dict(tr_dsge3.BASE)
 I1, I2 = irfs_for(d1), irfs_for(d2)
 SH = [("e_m", "Faiz +1 puan"), ("e_rstar", "Kur primi: TL reel %1 değer kaybı"), ("e_oil", "Brent +%10")]
 VS = [("y", 1, "GSYH (%)"), ("pi", 4, "TÜFE enfl. (yıllık puan)"), ("i", 4, "Politika faizi (yıllık puan)")]

@@ -8,7 +8,7 @@ import ms_model as M
 
 st.title("Senaryo analizi: modeli canlı çözün")
 st.caption("Para politikası kuralını, girdi-çıktı ağını ve fiyat katılıklarını değiştirerek çok sektörlü modeli yeniden çözer "
-           "(150 denklem, yaklaşık 1 saniye). Kesikli çizgiler ve işaretler temel senaryoyu (2006–2019 tahmini) gösterir.")
+           "(159 denklem, birkaç saniye). Kesikli çizgiler ve işaretler temel senaryoyu (2006–2019 tahmini) gösterir.")
 
 BASE_P = M.base_params()
 THETA0 = M.CALVO.copy()

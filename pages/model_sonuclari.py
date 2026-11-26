@@ -26,11 +26,11 @@ with tabs[0]:
         img(fn, cap)
 
 with tabs[1]:
-    st.markdown("**Genişletilmiş model** (7 gözlenen, 8 şok; 2006Ç1–2019Ç4; dört zincir × 60.000 çekiliş). Para politikası kuralı "
+    st.markdown("**Genişletilmiş model** (9 gözlenen, 10 şok; yatırım ve finansal hızlandırıcı dahil; 2006Ç1–2019Ç4; dört zincir × 60.000 çekiliş). Para politikası kuralı "
                 "çıktı düzeyine değil çıktı büyümesine (φΔy) tepki verir.")
-    st.info("Posterior iki tepelidir: baskın tepede yerli maliyet şoku geçicidir (ρcp ≈ 0,3, θH ≈ 0,84); ikinci tepede çok kalıcıdır "
-            "(ρcp ≈ 0,95, θH ≈ 0,66). Laplace yaklaşımına göre olasılık kütlesinin yaklaşık %87'si baskın tepededir; tablo ve "
-            "grafikler bu tepeye koşulludur.")
+    st.info("Yatırım ve kredi faizi farkı gözlenen değişken olarak eklendikten sonra dört zincir uyumludur (tüm R-hat < 1,03) ve tam "
+            "posterior raporlanır. Önceki sürümde görülen ikinci bölge (kalıcı maliyet şoku, daha esnek yerli fiyatlar) posteriorun "
+            "küçük bir kuyruğu olarak kalmaktadır (çekilişlerin yaklaşık %8'i).")
     t = pd.read_csv(MODEL_DIR / "s1_posterior_table.csv")
     t = t.rename(columns={"param": "Parametre", "prior": "Önsel", "prior_mean": "Önsel ort.", "post_mean": "Posterior ort.",
                           "p05": "%5", "p95": "%95", "rhat": "R-hat", "onceki_model": "İlk tahmin"})
