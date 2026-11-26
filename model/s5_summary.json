@@ -87,18 +87,18 @@
  },
  "dogrulama": {
   "e_m": {
-   "spearman": 0.44,
-   "p": 0.053,
+   "spearman": 0.42,
+   "p": 0.066,
    "pearson": 0.5,
    "ms_ort": -2.12,
-   "ssk_ort": -2.47
+   "ssk_ort": -2.45
   },
   "e_oil": {
-   "spearman": 0.51,
+   "spearman": 0.52,
    "p": 0.02,
    "pearson": 0.85,
    "ms_ort": 0.25,
-   "ssk_ort": 0.38
+   "ssk_ort": 0.39
   }
  },
  "sektorel_top": {

@@ -65,7 +65,7 @@ for r, (s, sl) in enumerate(SHS):
         if c == 0: ax.set_ylabel(sl + "\n(1 std. şok)", color=INK, fontsize=10)
         ax.set_xlim(0, Hh - 1); ax.set_xticks([0, 4, 8, 12])
         if r == len(SHS) - 1: ax.set_xlabel("Çeyrek")
-fig.suptitle("Genişletilmiş model (Brent + AB öncü göstergesi + yerli maliyet şoku): etki-tepkiler, %68/%90 bantlar",
+fig.suptitle("Genişletilmiş model (yatırım ve finansal hızlandırıcı dahil): etki-tepkiler, %68/%90 bantlar",
              x=0.01, ha="left", fontsize=11.5, color=INK, fontweight="bold")
 fig.tight_layout(rect=(0, 0, 1, 0.965)); fig.savefig("s1_1_irf.png", dpi=150); plt.close(fig)
 
