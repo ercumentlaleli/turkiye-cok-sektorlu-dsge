@@ -36,13 +36,14 @@ theta_mean = draws.mean(0)
 
 GROUPS = [("Arz (verimlilik)", ["e_a"]), ("Yurt içi talep", ["e_d"]), ("Kur primi", ["e_prem", "e_rstar"]),
           ("Dış talep (AB-4 öncü gös.)", ["e_ystar"]), ("Para politikası", ["e_m"]), ("Brent petrol", ["e_oil"]),
-          ("Yerli maliyet", ["e_cp"])]
-GCOL = [CAT[0], CAT[1], CAT[2], CAT[3], CAT[6], CAT[7], CAT[4]]
+          ("Yerli maliyet", ["e_cp"]), ("Yatırım etkinliği", ["e_mu"]), ("Net servet (finansal)", ["e_nw"])]
+GCOL = [CAT[0], CAT[1], CAT[2], CAT[3], CAT[6], CAT[7], CAT[4], CAT[5], "#52514e"]
 gi = lambda l: [SHOCKS.index(s) for s in l]
 
 # IRF bantları
-SHS = [("e_m", "Para politikası"), ("e_rstar", "Kur primi"), ("e_oil", "Brent petrol"), ("e_cp", "Yerli maliyet")]
-VS = [("y", 1, "GSYH (%)"), ("pi", 4, "TÜFE enfl. (yıllık puan)"), ("i", 4, "Politika faizi (yıllık puan)"),
+SHS = [("e_m", "Para politikası"), ("e_rstar", "Kur primi"), ("e_oil", "Brent petrol"), ("e_cp", "Yerli maliyet"),
+       ("e_mu", "Yatırım etkinliği"), ("e_nw", "Net servet")]
+VS = [("y", 1, "GSYH (%)"), ("inv", 1, "Yatırım (%)"), ("pi", 4, "TÜFE enfl. (yıllık puan)"), ("i", 4, "Politika faizi (yıllık puan)"),
       ("q", 1, "Reel kur (%, + = TL kaybı)")]
 Hh = 16; rng = np.random.default_rng(1); sel = draws[rng.choice(len(draws), 400, replace=False)]
 irfs = {s: [] for s, _ in SHS}
@@ -54,7 +55,7 @@ for th in sel:
         z = np.zeros((Hh, N)); e = np.zeros(len(SHOCKS)); e[SX[s]] = p["sd_" + s[2:]]; z[0] = Q @ e
         for t in range(1, Hh): z[t] = P @ z[t - 1]
         irfs[s].append(z)
-fig, axes = plt.subplots(4, 4, figsize=(11, 10)); x = np.arange(Hh)
+fig, axes = plt.subplots(len(SHS), len(VS), figsize=(13, 13)); x = np.arange(Hh)
 for r, (s, sl) in enumerate(SHS):
     a = np.array(irfs[s])
     for c, (v, mlt, vl) in enumerate(VS):
@@ -66,7 +67,7 @@ for r, (s, sl) in enumerate(SHS):
         if r == 0: ax.set_title(vl, loc="left", color=INK, fontsize=10)
         if c == 0: ax.set_ylabel(sl + "\n(1 std. şok)", color=INK, fontsize=10)
         ax.set_xlim(0, Hh - 1); ax.set_xticks([0, 4, 8, 12])
-        if r == 3: ax.set_xlabel("Çeyrek")
+        if r == len(SHS) - 1: ax.set_xlabel("Çeyrek")
 fig.suptitle("Genişletilmiş model (Brent + AB öncü göstergesi + yerli maliyet şoku): etki-tepkiler, %68/%90 bantlar",
              x=0.01, ha="left", fontsize=11.5, color=INK, fontweight="bold")
 fig.tight_layout(rect=(0, 0, 1, 0.965)); fig.savefig("s1_1_irf.png", dpi=150); plt.close(fig)
@@ -79,8 +80,8 @@ def fevd(h):
     for _ in range(h): acc += (Pk @ Qs) ** 2; Pk = P @ Pk
     return acc / acc.sum(1, keepdims=True)
 FV = {h: fevd(h) for h in (1, 4, 8, 20)}
-fvv = [("y", "GSYH"), ("pi", "TÜFE enflasyonu"), ("i", "Politika faizi"), ("q", "Reel kur")]
-fig, axes = plt.subplots(1, 4, figsize=(11, 4.3), sharey=True); hs = [1, 4, 8, 20]
+fvv = [("y", "GSYH"), ("inv", "Yatırım"), ("pi", "TÜFE enflasyonu"), ("i", "Politika faizi"), ("q", "Reel kur")]
+fig, axes = plt.subplots(1, len(fvv), figsize=(13, 4.6), sharey=True); hs = [1, 4, 8, 20]
 for ax, (v, vl) in zip(axes, fvv):
     bot = np.zeros(4)
     for (gl, gs), col in zip(GROUPS, GCOL):
@@ -90,9 +91,9 @@ for ax, (v, vl) in zip(axes, fvv):
     ax.set_ylim(0, 100); ax.grid(axis="x", visible=False)
 axes[0].set_ylabel("Tahmin hatası varyansı payı (%)")
 h_, l_ = axes[0].get_legend_handles_labels()
-fig.legend(h_, l_, loc="lower center", ncol=7, frameon=False, fontsize=8.3, labelcolor=INK2)
+fig.legend(h_, l_, loc="lower center", ncol=5, frameon=False, fontsize=8.3, labelcolor=INK2)
 fig.suptitle("Varyans ayrıştırması — genişletilmiş model", x=0.01, ha="left", fontsize=12, color=INK, fontweight="bold")
-fig.tight_layout(rect=(0, 0.08, 1, 0.93)); fig.savefig("s1_2_fevd.png", dpi=150); plt.close(fig)
+fig.tight_layout(rect=(0, 0.13, 1, 0.93)); fig.savefig("s1_2_fevd.png", dpi=150); plt.close(fig)
 
 # Tarihsel ayrıştırma (enflasyon)
 T_, R_, Z_ = E.state_space(theta_mean); _, (xs, eps) = E.kalman(T_, R_, Z_, smooth=True)

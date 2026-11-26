@@ -5,7 +5,7 @@ import sys, json, numpy as np, pandas as pd
 from dsge_est import *
 s1 = pd.read_csv("s1_posterior_table.csv", index_col=0)
 FREE = ["thH", "thF", "dH", "dF", "rho_i", "phi_pi", "phi_dy", "phi_e",
-        "sd_a", "sd_d", "sd_prem", "sd_oil", "sd_ystar", "sd_rstar", "sd_m", "sd_cp"]
+        "sd_a", "sd_d", "sd_prem", "sd_oil", "sd_ystar", "sd_rstar", "sd_m", "sd_cp", "sd_mu", "sd_nw"]
 allp = {p[0]: p for p in default_priors()}
 pri = [allp[k] for k in FREE]
 fixed = {k: float(s1.post_mean[k]) for k in s1.index if k not in FREE}
