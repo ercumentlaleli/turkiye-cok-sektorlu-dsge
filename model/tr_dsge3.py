@@ -58,7 +58,8 @@ BASE = dict(
     # Not: Çıktı düzeyine tepki, net dış varlıkların çok yavaş eridiği şoklarda (dış talep, Brent) GSYH'nin
     # kalıcı denge düzeyinden uzun süre sapmasını çıktı açığı sayıp enflasyonu on yıllarca sıfırdan uzak
     # tutuyordu. Büyümeye tepki veren kural veriye aynı ölçüde uyar ve bu sorunu ortadan kaldırır.
-    rho_a=0.90, rho_d=0.70, rho_prem=0.80, rho_oil=0.70,
+    rho_a=0.70, sd_a=0.50,   # verimlilik şoku: veriyle tanımlanamıyor; v3 posterior ortalamalarında sabit
+    rho_d=0.70, rho_prem=0.80, rho_oil=0.70,
     rho_ystar=0.80, rho_rstar=0.85, rho_m=0.50, rho_cp=0.30,
     # --- v3: yatırım ve finansal hızlandırıcı
     kap=0.40,     # katma değerde sermaye payı

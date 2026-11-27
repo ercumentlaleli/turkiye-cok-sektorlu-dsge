@@ -23,8 +23,10 @@ OBS = [  # (ad, tür, model değişkeni)
     ("dq", "diff", "q"), ("doil", "diff", "oil"), ("ystar", "level", "ystar"),
     ("dinv", "diff", "inv"), ("spread", "spread", None),   # spread = spr + zeta*prem (firma kredi faizi - politika faizi)
     ("dcred", "credit", None),   # finans dışı özel sektör kredisi/GSYH büyümesi = Δ(b - y), b = girişimci borcu (BIS)
-    ("exp4", "expect", None),    # 12 ay sonrası TÜFE beklentisi (PKA, 2013 sonrası) = E_t Σ_{j=1..4} π_{t+j}
-    ("dl", "diff", "l")]         # istihdam büyümesi (TÜİK, MA) -> verimlilik şokunu tanımlar
+    ("exp4", "expect", None)]    # 12 ay sonrası TÜFE beklentisi (PKA, 2013 sonrası) = E_t Σ_{j=1..4} π_{t+j}
+# Not: İstihdam büyümesi ("dl", "diff", "l") denendi; istihdamın GSYH ile zayıf birlikte hareketi (kayıt dışılık, tarım,
+# demografik trend) işsizlik/emek tutma kanalı olmayan modelde GSYH dalgalanmasının %82'sini verimlilik şokuna yüklediği
+# için kullanılmamıştır. Verimlilik şoku veriyle tanımlanamadığından parametreleri sabitlenmiştir (tr_dsge3.BASE).
 OBSN = [o[0] for o in OBS]
 ME_SHARE = {"dy": 0.10, "dc": 0.10, "ystar": 0.10, "dinv": 0.10, "spread": 0.10,
             "dcred": 0.20,   # döviz cinsi kredilerin kur kaynaklı yeniden değerlemesi modelde yok -> daha büyük ölçüm hatası
@@ -74,11 +76,11 @@ def default_priors():
         ("om_e", 0.2, "beta", 0.2, 0.05), ("kap_oil", 0.05, "gamma", 0.05, 0.025),
         ("rho_i", 0.85, "beta", 0.75, 0.1), ("phi_pi", 1.85, "gamma", 1.5, 0.25),
         ("phi_dy", 0.25, "gamma", 0.25, 0.1), ("phi_e", 0.11, "gamma", 0.1, 0.05),
-        ("rho_a", 0.7, "beta", 0.7, 0.1), ("rho_d", 0.6, "beta", 0.7, 0.1),
+("rho_d", 0.6, "beta", 0.7, 0.1),
         ("rho_prem", 0.7, "beta", 0.7, 0.1), ("rho_oil", 0.3, "beta", 0.5, 0.2),
         ("rho_ystar", 0.9, "beta", 0.8, 0.1), ("rho_rstar", 0.8, "beta", 0.7, 0.1),
         ("rho_m", 0.28, "beta", 0.5, 0.2), ("rho_cp", 0.3, "beta", 0.5, 0.2),
-        ("sd_a", 3.0, "invg", 0.5, 4.0), ("sd_d", 0.9, "invg", 0.5, 4.0), ("sd_prem", 0.5, "invg", 0.5, 4.0),
+("sd_d", 0.9, "invg", 0.5, 4.0), ("sd_prem", 0.5, "invg", 0.5, 4.0),
         ("sd_oil", 15.0, "invg", 5.0, 4.0), ("sd_ystar", 0.4, "invg", 0.5, 4.0),
         ("sd_rstar", 0.9, "invg", 0.5, 4.0), ("sd_m", 0.4, "invg", 0.5, 4.0), ("sd_cp", 0.5, "invg", 0.5, 4.0),
         # v3: yatırım ve finansal hızlandırıcı
