@@ -8,3 +8,4 @@ model/s1_chain*.npy
 model/s2_chain*.npy
 model/lp*.npy
 model/*.log
+model/ms_chain*.npy
