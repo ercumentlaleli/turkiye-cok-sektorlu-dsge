@@ -17,7 +17,7 @@ def img(fn, cap):
 
 
 tabs = st.tabs(["1. Kalibre model", "2. Bayesçi tahmin", "3. Dönem karşılaştırması", "4. Sektörel (SSK)", "5. LP-IV sağlaması",
-                "6. Çok sektörlü model"])
+                "6. Çok sektörlü model", "7. Rejim değişkenli model"])
 
 with tabs[0]:
     st.markdown("Literatür ve Türkiye'nin yapısal özelliklerine dayalı kalibrasyonla elde edilen etki-tepkiler.")
@@ -76,3 +76,22 @@ with tabs[5]:
     img("s5_4_dogrulama.png", "Çok sektörlü model ile SSK karşılaştırması")
     st.markdown("**Sektörel Calvo parametreleri**")
     st.dataframe(pd.read_csv(MODEL_DIR / "data" / "io" / "calvo_sector.csv").round(3), hide_index=True, width="stretch")
+
+with tabs[6]:
+    st.markdown("**Markov rejim değişkenli DSGE (2006Ç1–2026Ç2).** İki bağımsız zincir: para politikası (aktif/pasif) ve fiyatlama "
+                "(normal/yüksek enflasyon); toplam dört rejim. Farmer-Waggoner-Zha çözümü ve Kim filtresiyle tahmin edilmiştir. "
+                "Ajanlar rejim değişimi olasılığını beklentilerine yansıtır. Salgın çeyrekleri (2020Ç2–Ç4) eksik veri sayılmıştır.")
+    pm = MODEL_DIR / "ms_summary.json"
+    if pm.exists():
+        ms = json.load(open(pm, encoding="utf-8"))
+        rp = pd.DataFrame(ms["rejim_olasiligi_donem_ort"]).T.rename(columns={"pasif_politika": "Pasif politika olasılığı",
+                                                                            "yuksek_enflasyon": "Yüksek enflasyon olasılığı"})
+        st.markdown("**Dönem ortalaması rejim olasılıkları**")
+        st.dataframe(rp, width="stretch")
+        img("ms_1_rejim_olasiliklari.png", "Filtrelenmiş rejim olasılıkları")
+        img("ms_2_rejim_irf.png", "Rejime göre etki-tepkiler")
+        t = pd.read_csv(MODEL_DIR / "ms_posterior_table.csv").rename(columns={"Unnamed: 0": "Parametre", "prior": "Önsel",
+            "prior_mean": "Önsel ort.", "post_mean": "Posterior ort.", "p05": "%5", "p95": "%95", "rhat": "R-hat"})
+        st.markdown("**Posterior tablo** (A2_: pasif politika rejimi; B2_: yüksek enflasyon rejimi; off_: rejime özgü nominal sabitler; "
+                    "pXX: rejimde kalma olasılıkları)")
+        st.dataframe(t.round(3), hide_index=True, width="stretch")
