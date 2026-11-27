@@ -11,7 +11,7 @@ st.markdown("""
 | Aşama | Yöntem | Veri | Çıktı |
 |---|---|---|---|
 | 1. Toplulaştırılmış DSGE | Log-doğrusal Yeni Keynesyen küçük açık ekonomi modeli; doğrusal zaman iterasyonu ile çözüm | Kalibrasyon | Etki-tepkiler |
-| 2. Bayesçi tahmin | Kalman filtresi, posterior mod, Metropolis-Hastings | EVDS: GSYH, tüketim, TÜFE, faiz, reel kur, Brent, AB-4 öncü göstergesi | Posterior dağılımlar, varyans ve tarihsel ayrıştırma |
+| 2. Bayesçi tahmin | Kalman filtresi, posterior mod, Metropolis-Hastings | EVDS: GSYH, tüketim, yatırım, TÜFE, faiz, reel kur, Brent, AB-4 öncü göstergesi, ticari kredi faizi farkı, kredi/GSYH (BIS), 12 ay sonrası TÜFE beklentisi | Posterior dağılımlar, varyans ve tarihsel ayrıştırma |
 | 3. SSK uydu denklemleri | DSGE durumlarına AR(1) hatalı uydu regresyonları | 25 NACE-2 sektörü (Yİ-ÜFE, sanayi üretimi) | Sektörel tepkiler |
 | 4. LP-IV sağlaması | Yerel projeksiyon, Romer-Romer tipi araç | Aynı sektörel veri | Tutarlılık istatistikleri |
 | 5. Çok sektörlü ağlı model | 32 sektörlü genel denge, tahmin edilen sektörel Calvo parametreleri | TÜİK 2023 girdi-çıktı tabloları | Karşı-olgusal deneyler, şok gezgini |
