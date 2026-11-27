@@ -54,26 +54,26 @@ Komutlar depo kökünden çalıştırılır; tüm yollar `model/` klasörüne g�
 
 ## Başlıca sonuçlar
 
-- **Para politikası (+1 puan faiz):** Çok sektörlü modelde TÜFE düzeyi 4 çeyrekte %1,24, 8 çeyrekte %1,58 düşer; 8 çeyreklik kümülatif GSYH kaybı %4,2'dir. Yerli fiyatlar çok katıdır (θH ≈ 0,93).
-- **Şokların payı (4 çeyrek):** TÜFE dalgalanmasının %64'ü yerli maliyet, %20'si kur primi şoklarından gelir. GSYH'de yurt içi talep %30, yerli maliyet %22, yatırım etkinliği %21, para politikası %18 paya sahiptir.
-- **2023–2026 rejimi:** Yerli fiyat katılığı 0,93'ten 0,55'e düşer (ikinci bir posterior bölgesinde ≈ 0,1), yerli maliyet şoklarının oynaklığı yaklaşık üç katına çıkar; faiz şokunun etki anındaki dezenflasyon etkisi yaklaşık 1,1 puandır.
-- **Fiyat katılığı heterojenliği:** Fedakârlık oranını yaklaşık %60 artırır (2,65'e karşı 1,71). Girdi-çıktı ağının makro şoklara etkisi sınırlıdır; asıl rolü girdi sağlayıcı sektörlerdeki (elektrik-gaz, tarım) maliyet şoklarını büyütmesidir.
-- **Finansal kanal:** Kredi/GSYH verisi net servet şokunu tanımlar (yatırım dalgalanmasının %8'i); dış finansman priminin kaldıraca esnekliği küçüktür (ν ≈ 0,021).
-- **Doğrulama:** Brent şokunda sektörel fiyat sıralaması SSK ile güçlü biçimde örtüşür (ρ = 0,80); faiz şokunda ortalama etki aynıdır ama sıralamadaki örtüşme zayıftır (ρ = 0,32, anlamlı değil). LP-IV'deki büyük gecikmeli üretim etkisi (8 çeyrekte −%4,2) yapısal modelde yakalanmamaktadır.
+- **Para politikası (+1 puan faiz):** Çok sektörlü modelde TÜFE düzeyi 4 çeyrekte %1,64, 8 çeyrekte %1,93 düşer; 8 çeyreklik kümülatif GSYH kaybı %3,7'dir.
+- **Şokların payı (4 çeyrek):** TÜFE dalgalanmasının %44'ü yerli maliyet, %19'u kur primi, %14'ü para politikası şoklarından gelir. GSYH'de yatırım etkinliği %29, yerli maliyet %20, yurt içi talep %19, para politikası %12, verimlilik %10 paya sahiptir.
+- **Kur primi ve döviz borcu:** Firma borcunun yaklaşık %39'u döviz cinsidir; bu kanalla kur primi şoku daraltıcıdır (1 standart sapmalık şokta GSYH zirve etkisi −%0,62, yatırım −%4,5).
+- **2023–2026 rejimi:** Yerli fiyat katılığı 0,86'dan 0,54'e düşer, yerli maliyet şoklarının oynaklığı yaklaşık üç katına çıkar; faiz şokunun etki anındaki dezenflasyon etkisi yaklaşık 1,6 puandır.
+- **Fiyat katılığı heterojenliği:** Fedakârlık oranını yaklaşık %50 artırır (1,90'a karşı 1,26). Girdi-çıktı ağının makro şoklara etkisi sınırlıdır; asıl rolü girdi sağlayıcı sektörlerdeki maliyet şoklarını büyütmesidir.
+- **Doğrulama:** SSK ile LP-IV, faiz şokunun 4 çeyrekteki fiyat etkisinde sıralamada ρ = 0,52, işarette %96 uyumludur; sanayi üretiminde 8 çeyrekte sıralama da örtüşür (ρ = 0,40). LP-IV'deki büyük gecikmeli üretim etkisinin büyüklüğü (8 çeyrekte −%4,2) yapısal modelde yakalanmamaktadır.
 
 ## Modelleme notları
 
-- **Gözlenenler (11):** GSYH, tüketim, yatırım, TÜFE, politika faizi, reel kur, Brent, AB-4 öncü göstergesi, ticari kredi faizi farkı, kredi/GSYH büyümesi (BIS) ve 12 ay sonrası TÜFE beklentisi (Piyasa Katılımcıları Anketi, 2013 sonrası; öncesi eksik veri).
-- **Verimlilik şoku:** Mevcut gözlenenlerle tanımlanamadığından parametreleri sabittir (σa = 0,50, ρa = 0,70). İstihdam verisi denenmiş; işsizlik kanalı olmayan modelde GSYH dalgalanmasının %82'sini verimlilik şokuna yüklediği için kullanılmamıştır.
-- **Posterior:** 2006–2019'da dört zincir × 60.000 çekiliş, tek tepeli, tüm R-hat < 1,03. 2023–2026'da iki bölge vardır; geniş (ana) bölge raporlanır.
-- **Belirsizlik bantları:** Şok gezgininde sektörel ve makro tepkiler, makro blok parametrelerinin 200 posterior çekilişiyle elde edilen %68/%90 bantlarıyla gösterilir (`model/ms_bands.py`). Çok sektörlü model QZ (genelleştirilmiş Schur) ile çözülür.
-- **Yatırım ve finansal hızlandırıcı:** Sermaye birikimi, yatırım düzenleme maliyeti, Tobin q, yatırım malının yüksek ithal içeriği ve Bernanke-Gertler-Gilchrist tipi dış finansman primi.
-- **Para politikası kuralı:** Kural çıktı düzeyine değil çıktı büyümesine tepki verir (φΔy).
+- **Gözlenenler (12):** GSYH, tüketim, yatırım, TÜFE, politika faizi, reel kur, Brent, AB-4 öncü göstergesi, ticari kredi faizi farkı, kredi/GSYH büyümesi (BIS), 12 ay sonrası TÜFE beklentisi (2013 sonrası) ve sanayide çalışılan saat başına üretim (2009 sonrası).
+- **Verimlilik şoku:** Saat başına sanayi verimliliğiyle tanımlanır. İstihdam verisi işsizlik kanalı olmayan modelde GSYH dalgalanmasının %82'sini verimlilik şokuna yüklediği için kullanılmamıştır.
+- **Döviz cinsi borç:** Girişimci borcunun ϕ kadarı döviz cinsidir (Céspedes-Chang-Velasco); TL'nin beklenmedik değer kaybı net serveti düşürür.
+- **Posterior:** 2006–2019'da dört zincir × 60.000 çekiliş, tek tepeli, tüm R-hat ≤ 1,03. 2023–2026'da tüm R-hat ≤ 1,02.
+- **Belirsizlik bantları:** Şok gezgininde %68/%90 posterior bantları (`model/ms_bands.py`, 200 çekiliş). Çok sektörlü model QZ ile çözülür.
+- **Para politikası kuralı:** Kural çıktı büyümesine tepki verir (φΔy).
 - **Şok normalizasyonları:** Faiz +1 puan, kur primi TL reel %1 değer kaybı, Brent +%10; dış talep, yurt içi talep, yerli maliyet ve yatırım etkinliği şokları etki anında %1; finansal şok dış finansman priminde yıllık +1 puan.
 
 ## Sınırlar
 
-- Modelde banka bilançosu ve kredi stoku, döviz cinsi borç bilanço etkisi ve maliye politikası yoktur. Bu nedenle büyük gecikmeli üretim etkileri ve kur değer kaybının bilanço kaynaklı daraltıcı etkisi eksik kalabilir.
+- Modelde banka bilançosu ve kredi arzı, işsizlik ve maliye politikası yoktur. Bu nedenle büyük gecikmeli üretim etkileri eksik kalabilir.
 - Yabancı enflasyon sıfır varsayılmaktadır (yurt dışı fiyatlar dışsal ve sabit).
 - 2023 sonrası dönem tahmini 12 gözleme dayanır; yalnızca yön bilgisi verir.
 - LP-IV'de faiz şokunun etki anında zayıf bir price puzzle görülür.

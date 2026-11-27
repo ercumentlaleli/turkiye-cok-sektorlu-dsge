@@ -26,10 +26,10 @@ with tabs[0]:
         img(fn, cap)
 
 with tabs[1]:
-    st.markdown("**Genişletilmiş model** (11 gözlenen, 10 şok; yatırım, finansal hızlandırıcı, kredi/GSYH ve enflasyon beklentisi dahil; "
-                "2006Ç1–2019Ç4; dört zincir × 60.000 çekiliş). Para politikası kuralı çıktı büyümesine (φΔy) tepki verir.")
-    st.info("Enflasyon beklentisi anketi gözlenen değişken yapıldıktan sonra posterior tek tepelidir (tüm R-hat < 1,03). Verimlilik şoku "
-            "mevcut gözlenenlerle tanımlanamadığından parametreleri sabittir (σa = 0,50, ρa = 0,70).")
+    st.markdown("**Genişletilmiş model** (12 gözlenen, 10 şok; yatırım, finansal hızlandırıcı, döviz cinsi firma borcu, kredi/GSYH, "
+                "enflasyon beklentisi ve sanayide saat başına verimlilik dahil; 2006Ç1–2019Ç4; dört zincir × 60.000 çekiliş).")
+    st.info("Posterior tek tepelidir (tüm R-hat ≤ 1,03). Verimlilik şoku sanayide çalışılan saat başına üretimle, net servet şoku "
+            "kredi/GSYH büyümesiyle tanımlanmaktadır.")
     t = pd.read_csv(MODEL_DIR / "s1_posterior_table.csv")
     t = t.rename(columns={"param": "Parametre", "prior": "Önsel", "prior_mean": "Önsel ort.", "post_mean": "Posterior ort.",
                           "p05": "%5", "p95": "%95", "rhat": "R-hat", "onceki_model": "İlk tahmin"})
@@ -46,9 +46,7 @@ with tabs[1]:
             img(fn, cap)
 
 with tabs[2]:
-    st.markdown("2023Ç3–2026Ç2 dönemi (12 gözlem) için kısmi yeniden tahmin. Büyüklükler değil yönler dikkate alınmalıdır. Veri, "
-                "orta düzeyde katı fiyatlar ve büyük maliyet şokları (ana bölge, θH ≈ 0,55) ile çok esnek fiyatlar (ikinci bölge, θH ≈ 0,1) "
-                "arasında tam ayrım yapamamaktadır; her iki durumda da fiyat katılığı 2006–2019'a göre belirgin biçimde düşüktür.")
+    st.markdown("2023Ç3–2026Ç2 dönemi (12 gözlem) için kısmi yeniden tahmin. Büyüklükler değil yönler dikkate alınmalıdır.")
     st.dataframe(pd.read_csv(MODEL_DIR / "s2_compare_table.csv").round(3), hide_index=True, width="stretch")
     img("s2_1_donem_irf.png", "Aynı şoka iki dönemde verilen tepki")
 
