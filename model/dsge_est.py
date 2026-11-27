@@ -23,11 +23,12 @@ OBS = [  # (ad, tür, model değişkeni)
     ("dq", "diff", "q"), ("doil", "diff", "oil"), ("ystar", "level", "ystar"),
     ("dinv", "diff", "inv"), ("spread", "spread", None),   # spread = spr + zeta*prem (firma kredi faizi - politika faizi)
     ("dcred", "credit", None),   # finans dışı özel sektör kredisi/GSYH büyümesi = Δ(b - y), b = girişimci borcu (BIS)
-    ("exp4", "expect", None)]    # 12 ay sonrası TÜFE beklentisi (PKA, 2013 sonrası) = E_t Σ_{j=1..4} π_{t+j}
+    ("exp4", "expect", None),    # 12 ay sonrası TÜFE beklentisi (PKA, 2013 sonrası) = E_t Σ_{j=1..4} π_{t+j}
+    ("dl", "diff", "l")]         # istihdam büyümesi (TÜİK, MA) -> verimlilik şokunu tanımlar
 OBSN = [o[0] for o in OBS]
 ME_SHARE = {"dy": 0.10, "dc": 0.10, "ystar": 0.10, "dinv": 0.10, "spread": 0.10,
             "dcred": 0.20,   # döviz cinsi kredilerin kur kaynaklı yeniden değerlemesi modelde yok -> daha büyük ölçüm hatası
-            "exp4": 0.10}   # sabit ölçüm hatası (veri varyansı payı)
+            "exp4": 0.10, "dl": 0.10}   # sabit ölçüm hatası (veri varyansı payı)
 
 def load_obs(start, end):
     d = pd.read_csv(f"{MODEL_DIR}/data/evds_raw.csv", index_col=0)
@@ -40,7 +41,9 @@ def load_obs(start, end):
         "dq": -100 * np.log(d["reer"]).diff(), "doil": 100 * np.log(d["brent"]).diff(),
         "ystar": d["cli_eu4"] - 100, "dinv": 100 * np.log(d["inv"]).diff(),
         "spread": (d["loan_rate"] - rate) / 4, "dcred": 100 * np.log(d["credit_gdp"]).diff(),
-        "exp4": 100 * np.log(1 + d["exp12_cpi"] / 100)}, index=d.index).loc[start:end]
+        "exp4": 100 * np.log(1 + d["exp12_cpi"] / 100), "dl": 100 * np.log(d["employment"]).diff()}, index=d.index)
+    obs.loc["2014Q1", "dl"] = np.nan   # TÜİK 2014 yöntem revizyonu kaynaklı düzey kırılması
+    obs = obs.loc[start:end]
     means = obs.mean()
     return obs - means, means
 
