@@ -21,9 +21,13 @@ N = len(VARS)
 OBS = [  # (ad, tür, model değişkeni)
     ("dy", "diff", "y"), ("dc", "diff", "c"), ("pi", "level", "pi"), ("i", "level", "i"),
     ("dq", "diff", "q"), ("doil", "diff", "oil"), ("ystar", "level", "ystar"),
-    ("dinv", "diff", "inv"), ("spread", "spread", None)]   # spread = spr + zeta*prem (firma kredi faizi - politika faizi)
+    ("dinv", "diff", "inv"), ("spread", "spread", None),   # spread = spr + zeta*prem (firma kredi faizi - politika faizi)
+    ("dcred", "credit", None),   # finans dışı özel sektör kredisi/GSYH büyümesi = Δ(b - y), b = girişimci borcu (BIS)
+    ("exp4", "expect", None)]    # 12 ay sonrası TÜFE beklentisi (PKA, 2013 sonrası) = E_t Σ_{j=1..4} π_{t+j}
 OBSN = [o[0] for o in OBS]
-ME_SHARE = {"dy": 0.10, "dc": 0.10, "ystar": 0.10, "dinv": 0.10, "spread": 0.10}   # sabit ölçüm hatası (veri varyansı payı)
+ME_SHARE = {"dy": 0.10, "dc": 0.10, "ystar": 0.10, "dinv": 0.10, "spread": 0.10,
+            "dcred": 0.20,   # döviz cinsi kredilerin kur kaynaklı yeniden değerlemesi modelde yok -> daha büyük ölçüm hatası
+            "exp4": 0.10}   # sabit ölçüm hatası (veri varyansı payı)
 
 def load_obs(start, end):
     d = pd.read_csv(f"{MODEL_DIR}/data/evds_raw.csv", index_col=0)
@@ -35,7 +39,8 @@ def load_obs(start, end):
         "pi": 100 * np.log(d["cpi_sa"]).diff(), "i": rate / 4,
         "dq": -100 * np.log(d["reer"]).diff(), "doil": 100 * np.log(d["brent"]).diff(),
         "ystar": d["cli_eu4"] - 100, "dinv": 100 * np.log(d["inv"]).diff(),
-        "spread": (d["loan_rate"] - rate) / 4}, index=d.index).loc[start:end]
+        "spread": (d["loan_rate"] - rate) / 4, "dcred": 100 * np.log(d["credit_gdp"]).diff(),
+        "exp4": 100 * np.log(1 + d["exp12_cpi"] / 100)}, index=d.index).loc[start:end]
     means = obs.mean()
     return obs - means, means
 
@@ -129,9 +134,18 @@ class Estimator:
         T = np.zeros((2 * N, 2 * N)); T[:N, :N] = P; T[N:, :N] = np.eye(N)
         R = np.zeros((2 * N, len(SHOCKS))); R[:N] = Q * sds
         Z = np.zeros((len(OBS), 2 * N))
+        KN = p["KN"]; Pj = np.eye(N); Psum = np.zeros((N, N))
+        for _ in range(4): Pj = P @ Pj; Psum += Pj
         for k, (_, kind, v) in enumerate(OBS):
             if kind == "spread":
                 Z[k, IX["spr"]] = 1; Z[k, IX["prem"]] = p["zeta"]; continue
+            if kind == "credit":   # b = KN/(KN-1)*(qk+k) - 1/(KN-1)*n ;  gözlenen = Δ(b - y)
+                for off, sg in ((0, 1), (N, -1)):
+                    Z[k, off + IX["qk"]] += sg * KN / (KN - 1); Z[k, off + IX["k"]] += sg * KN / (KN - 1)
+                    Z[k, off + IX["n"]] -= sg / (KN - 1); Z[k, off + IX["y"]] -= sg
+                continue
+            if kind == "expect":   # E_t Σ_{j=1..4} π_{t+j} = (P + P² + P³ + P⁴)[π, :] z_t
+                Z[k, :N] = Psum[IX["pi"]]; continue
             Z[k, IX[v]] = 1
             if kind == "diff": Z[k, N + IX[v]] = -1
         return T, R, Z

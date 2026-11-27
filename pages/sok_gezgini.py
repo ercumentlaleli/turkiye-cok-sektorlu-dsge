@@ -22,6 +22,9 @@ with st.sidebar:
     var = st.radio("Değişken", ["Fiyat düzeyi", "Üretim"], horizontal=True)
     h = st.slider("Ufuk (çeyrek)", 0, 16, 4)
     ghost_on = st.checkbox("Ağsız modeli göster (fiyat)", value=True, disabled=(var != "Fiyat düzeyi"))
+    band_on = st.checkbox("Posterior belirsizlik bantlarını göster", value=True,
+                          help="Makro blok parametrelerinin 2006–2019 posterior çekilişleriyle modelin yeniden çözülmesinden elde edilen "
+                               "%68 (koyu) ve %90 (açık) aralıklar. Sektörel grafikte çubuklar %68 aralığıdır.")
     st.markdown("---")
     st.caption("Diğer sayfalar: canlı senaryo analizi, model sonuçları ve metodoloji (soldaki menü).")
 
@@ -30,6 +33,10 @@ m = s["macro"]
 isP = var == "Fiyat düzeyi"
 vals = np.array([row[h] for row in (s["P"] if isP else s["Y"])])
 ghost = np.array([row[h] for row in s["P_nonet"]]) if (isP and ghost_on) else None
+band = None
+if band_on and (s.get("P_band") if isP else s.get("Y_band")):
+    B = s["P_band"] if isP else s["Y_band"]
+    band = (np.array([row[h] for row in B[1]]), np.array([row[h] for row in B[2]]))
 
 # KPI satırı
 k = [("TÜFE düzeyi (%)", m["cpi"][h]), ("TÜFE enflasyonu (yıllık puan)", m["pi"][h]), ("GSYH (%)", m["y"][h]),
@@ -42,10 +49,10 @@ for c, (lab, v) in zip(cols, k):
 left, right = st.columns([1.6, 1])
 with left:
     title = ("Sektörel fiyat düzeyi" if isP else "Sektörel üretim") + f" — {h}. çeyrek (%)"
-    st.plotly_chart(sector_bar(SECT, LAB, vals, ghost, title=title), width="stretch")
+    st.plotly_chart(sector_bar(SECT, LAB, vals, ghost, title=title, band=band), width="stretch")
 with right:
     st.subheader("Makro tepkiler")
-    for fig in macro_lines([("Tam model", m, LINE, False)], h_mark=h):
+    for fig in macro_lines([("Tam model", m, LINE, False)], h_mark=h, bands=s.get("macro_band") if band_on else None):
         st.plotly_chart(fig, width="stretch")
 
 st.subheader(f"En çok etkilenen sektörler — {h}. çeyrek")
@@ -54,9 +61,12 @@ df = pd.DataFrame({"Sektör": [f"{SECT[i]} {LAB[i]}" for i in top],
                    ("Fiyat (%)" if isP else "Üretim (%)"): vals[top].round(4),
                    "Calvo θ": [D["theta"][i] for i in top],
                    "Tüketim payı (%)": [round(100 * D["c_share"][i], 1) for i in top]})
+if band is not None:
+    df.insert(2, "%68 alt", band[0][top].round(4)); df.insert(3, "%68 üst", band[1][top].round(4))
 if ghost is not None:
-    df.insert(2, "Ağsız (%)", ghost[top].round(4))
-    df.insert(3, "Ağ katkısı (%)", (vals[top] - ghost[top]).round(4))
+    pos = list(df.columns).index("Calvo θ")
+    df.insert(pos, "Ağsız (%)", ghost[top].round(4))
+    df.insert(pos + 1, "Ağ katkısı (%)", (vals[top] - ghost[top]).round(4))
 st.dataframe(df, hide_index=True, width="stretch")
 
 with st.expander("Tüm sektörler ve tüm ufuklar (indirilebilir tablo)"):

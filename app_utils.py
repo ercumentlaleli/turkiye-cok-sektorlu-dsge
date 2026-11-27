@@ -41,14 +41,20 @@ def decimals(vals):
     return 4 if m < 0.05 else 3 if m < 0.5 else 2
 
 
-def sector_bar(sectors, labels, vals, ghost=None, ghost_name="Ağsız model", title="", xlabel="%"):
+def sector_bar(sectors, labels, vals, ghost=None, ghost_name="Ağsız model", title="", xlabel="%", band=None):
+    """band: (alt, üst) — posterior %68 aralığı, yatay hata çubuğu olarak çizilir."""
     order = np.argsort(np.abs(vals))  # plotly alttan üste çizer: en büyük mutlak etki en üstte
     v = np.asarray(vals)[order]
     names = [f"{sectors[i]} {labels[i]}" for i in order]
     d = decimals(v)
     fig = go.Figure()
+    err = None
+    if band is not None:
+        lo, hi = np.asarray(band[0])[order], np.asarray(band[1])[order]
+        err = dict(type="data", symmetric=False, array=np.maximum(hi - v, 0), arrayminus=np.maximum(v - lo, 0),
+                   color="#52514e", thickness=1.2, width=0)
     fig.add_bar(x=v, y=names, orientation="h", marker_color=[POS if x >= 0 else NEG for x in v],
-                text=[fmt(x, d) for x in v], textposition="outside", cliponaxis=False,
+                text=[fmt(x, d) for x in v], textposition="outside", cliponaxis=False, error_x=err,
                 hovertemplate="%{y}<br>%{x:.4f}%<extra></extra>", name="Tepki")
     if ghost is not None:
         g = np.asarray(ghost)[order]
@@ -62,11 +68,16 @@ def sector_bar(sectors, labels, vals, ghost=None, ghost_name="Ağsız model", ti
     return fig
 
 
-def macro_lines(series_list, h_mark=None, height=190):
-    """series_list: [(etiket, dict(key->list), renk, kesikli)]"""
+def macro_lines(series_list, h_mark=None, height=190, bands=None):
+    """series_list: [(etiket, dict(key->list), renk, kesikli)]; bands: {anahtar: [q05, q16, q84, q95]} (posterior bantları)"""
     figs = []
     for key, title in MACRO_PANELS:
         fig = go.Figure()
+        if bands is not None and key in bands:
+            q = bands[key]; x = list(range(len(q[0])))
+            for lo, hi, alpha in ((q[0], q[3], 0.12), (q[1], q[2], 0.25)):
+                fig.add_scatter(x=x + x[::-1], y=list(hi) + list(lo)[::-1], fill="toself", mode="lines", line=dict(width=0),
+                                fillcolor=f"rgba(42,120,214,{alpha})", hoverinfo="skip", showlegend=False)
         for name, data, color, dash in series_list:
             fig.add_scatter(x=list(range(len(data[key]))), y=data[key], mode="lines", name=name,
                             line=dict(color=color, width=2, dash="dash" if dash else "solid"),

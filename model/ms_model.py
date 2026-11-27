@@ -121,9 +121,16 @@ def build(p, theta=None, network=True):
     assert row[0] == N, (row[0], N)
     return A0, A1, A2, B
 
-def solve(p, theta=None, network=True, tol=1e-11, maxit=20000):
+def solve(p, theta=None, network=True, method="qz", **kw):
+    """Varsayılan: QZ (hızlı, doğrudan). method="ti": zaman iterasyonu (Rendahl 2017)."""
+    if method == "qz":
+        sol = solve_qz(p, theta, network)
+        if sol["P"] is not None or sol["n_stable"] != N: return sol
+    return solve_ti(p, theta, network, **kw)
+
+def solve_ti(p, theta=None, network=True, tol=1e-11, maxit=20000, P0=None, check=True):
     A0, A1, A2, B = build(p, theta, network)
-    P = np.zeros((N, N))
+    P = np.zeros((N, N)) if P0 is None else P0.copy()   # P0: sıcak başlangıç (ör. önceki posterior çekilişinin çözümü)
     for it in range(maxit):
         Pn = -np.linalg.solve(A0 @ P + A1, A2)
         if np.max(np.abs(Pn - P)) < tol: P = Pn; break
@@ -132,8 +139,28 @@ def solve(p, theta=None, network=True, tol=1e-11, maxit=20000):
     Q = -np.linalg.solve(A0 @ P + A1, B)
     resid = np.max(np.abs(A0 @ P @ P + A1 @ P + A2))
     I, Z = np.eye(N), np.zeros((N, N))
-    lam = la.eig(np.block([[Z, I], [-A2, -A1]]), np.block([[I, Z], [Z, A0]]), right=False)
-    n_st = int(np.sum(np.abs(lam[np.isfinite(lam)]) < 1 - 1e-9))
+    if check:
+        lam = la.eig(np.block([[Z, I], [-A2, -A1]]), np.block([[I, Z], [Z, A0]]), right=False)
+        n_st = int(np.sum(np.abs(lam[np.isfinite(lam)]) < 1 - 1e-9))
+    else:
+        n_st = N if np.max(np.abs(np.linalg.eigvals(P))) < 1 else -1
+    return dict(P=P, Q=Q, resid=resid, n_stable=n_st, maxeig=float(np.max(np.abs(np.linalg.eigvals(P)))))
+
+def solve_qz(p, theta=None, network=True):
+    """Genelleştirilmiş Schur (QZ) ile doğrudan çözüm: [z_{t-1}; z_t] kaleminin kararlı alt uzayından P = X2 X1^{-1}.
+    Zaman iterasyonuyla aynı çözümü verir; kök 1'e yakın olduğunda çok daha hızlıdır (posterior bantları için)."""
+    A0, A1, A2, B = build(p, theta, network)
+    I, Z = np.eye(N), np.zeros((N, N))
+    F = np.block([[Z, I], [-A2, -A1]]); G = np.block([[I, Z], [Z, A0]])
+    AA, BB, alpha, beta, Qm, Zm = la.ordqz(F, G, sort="iuc", output="complex")
+    with np.errstate(divide="ignore", invalid="ignore"):
+        n_st = int(np.sum(np.abs(alpha) < (1 - 1e-9) * np.abs(beta)))
+    if n_st != N:
+        return dict(P=None, Q=None, resid=np.inf, n_stable=n_st, maxeig=np.nan)
+    X1, X2 = Zm[:N, :N], Zm[N:, :N]
+    P = np.real(np.linalg.solve(X1.T, X2.T).T)
+    Q = -np.linalg.solve(A0 @ P + A1, B)
+    resid = np.max(np.abs(A0 @ P @ P + A1 @ P + A2))
     return dict(P=P, Q=Q, resid=resid, n_stable=n_st, maxeig=float(np.max(np.abs(np.linalg.eigvals(P)))))
 
 def irf(sol, p, shock, H=16, norm=None):
