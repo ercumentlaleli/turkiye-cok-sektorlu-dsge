@@ -89,8 +89,11 @@ def build(p, theta=None, network=True):
     eq({("rke", 0): 1, ("rk", 0): -vpi, ("s", 0): vpi * ac, ("qk", 0): -(1 - vpi), ("qk", -1): 1})
     eq({("rke", 1): 1, ("i", 0): -1, ("pi", 1): 1, ("prem", 0): -z, ("spr", 0): -1})
     eq({("spr", 0): 1, ("qk", 0): -p["nu"], ("k", 0): -p["nu"], ("n", 0): p["nu"]})
-    eq({("n", 0): 1, ("rke", 0): -ge * KN, ("i", -1): ge * (KN - 1), ("pi", 0): -ge * (KN - 1),
-        ("prem", -1): ge * (KN - 1) * z, ("spr", -1): ge * (KN - 1), ("n", -1): -ge}, {"e_nw": -1})
+    fx = p.get("phi_fx", 0.0)
+    eq({("n", 0): 1, ("rke", 0): -ge * KN, ("i", -1): ge * (KN - 1) * (1 - fx), ("pi", 0): -ge * (KN - 1) * (1 - fx),
+        ("rstar", -1): ge * (KN - 1) * fx, ("prem", -1): ge * (KN - 1) * (z + fx), ("nfa", -1): -ge * (KN - 1) * fx * p["chi"],
+        ("q", 0): ge * (KN - 1) * fx, ("q", -1): -ge * (KN - 1) * fx,
+        ("spr", -1): ge * (KN - 1), ("n", -1): -ge}, {"e_nw": -1})
     for v, s_ in zip(["a", "d", "prem", "oil", "ystar", "rstar", "m", "cp", "mu"], SH_AGG):
         eq({(v, 0): 1, (v, -1): -p["rho_" + v]}, {s_: -1})
     # --- yerli fiyat düzeyi normalizasyonu: Σ ĉ_k r_k = 0  (π_H'yi belirler)

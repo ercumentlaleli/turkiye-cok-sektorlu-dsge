@@ -58,7 +58,7 @@ BASE = dict(
     # Not: Çıktı düzeyine tepki, net dış varlıkların çok yavaş eridiği şoklarda (dış talep, Brent) GSYH'nin
     # kalıcı denge düzeyinden uzun süre sapmasını çıktı açığı sayıp enflasyonu on yıllarca sıfırdan uzak
     # tutuyordu. Büyümeye tepki veren kural veriye aynı ölçüde uyar ve bu sorunu ortadan kaldırır.
-    rho_a=0.70, sd_a=0.50,   # verimlilik şoku: veriyle tanımlanamıyor; v3 posterior ortalamalarında sabit
+    rho_a=0.70, sd_a=0.50,   # verimlilik şoku (tahmin edilir; saat başına sanayi verimliliği gözlenir)
     rho_d=0.70, rho_prem=0.80, rho_oil=0.70,
     rho_ystar=0.80, rho_rstar=0.85, rho_m=0.50, rho_cp=0.30,
     # --- v3: yatırım ve finansal hızlandırıcı
@@ -70,6 +70,7 @@ BASE = dict(
     gam_e=0.97,   # girişimci hayatta kalma oranı
     KN=2.0,       # durağan durum kaldıracı K/N
     rho_mu=0.70,  # yatırım etkinliği şoku kalıcılığı
+    phi_fx=0.40,  # firma borcunun döviz cinsi payı (tahmin edilir)
 )
 
 def shares(p):
@@ -166,10 +167,15 @@ def build(p):
     eq({("rke", 1): 1, ("i", 0): -1, ("pi", 1): 1, ("prem", 0): -z, ("spr", 0): -1})
     # dış finansman primi kaldıraca bağlı: spr = nu*(qk + k - n)
     eq({("spr", 0): 1, ("qk", 0): -p["nu"], ("k", 0): -p["nu"], ("n", 0): p["nu"]})
-    # girişimci net serveti (e_nw: net servet şoku)
     ge, KN = p["gam_e"], p["KN"]
-    eq({("n", 0): 1, ("rke", 0): -ge * KN, ("i", -1): ge * (KN - 1), ("pi", 0): -ge * (KN - 1),
-        ("prem", -1): ge * (KN - 1) * z, ("spr", -1): ge * (KN - 1), ("n", -1): -ge}, {"e_nw": -1})
+    # girişimci net serveti (e_nw: net servet şoku). Borcun phi_fx kadarı döviz cinsidir: döviz borcunun gerçekleşen reel
+    # maliyeti dış faiz + ülke primi + gerçekleşen reel değer kaybıdır (Céspedes-Chang-Velasco 2004); UIP nedeniyle ex ante
+    # TL borçla aynı, ex post kur sürprizi kadar farklıdır -> TL değer kaybı net serveti düşürür.
+    fx = p.get("phi_fx", 0.0)
+    eq({("n", 0): 1, ("rke", 0): -ge * KN, ("i", -1): ge * (KN - 1) * (1 - fx), ("pi", 0): -ge * (KN - 1) * (1 - fx),
+        ("rstar", -1): ge * (KN - 1) * fx, ("prem", -1): ge * (KN - 1) * (z + fx), ("nfa", -1): -ge * (KN - 1) * fx * p["chi"],
+        ("q", 0): ge * (KN - 1) * fx, ("q", -1): -ge * (KN - 1) * fx,
+        ("spr", -1): ge * (KN - 1), ("n", -1): -ge}, {"e_nw": -1})
     # 16-24 Dışsal AR(1) süreçler
     for v, s_ in zip(["a", "d", "prem", "oil", "ystar", "rstar", "m", "cp", "mu"], SHOCKS):
         eq({(v, 0): 1, (v, -1): -p["rho_" + v]}, {s_: -1})

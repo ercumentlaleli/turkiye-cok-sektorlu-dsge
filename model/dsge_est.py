@@ -23,14 +23,15 @@ OBS = [  # (ad, tür, model değişkeni)
     ("dq", "diff", "q"), ("doil", "diff", "oil"), ("ystar", "level", "ystar"),
     ("dinv", "diff", "inv"), ("spread", "spread", None),   # spread = spr + zeta*prem (firma kredi faizi - politika faizi)
     ("dcred", "credit", None),   # finans dışı özel sektör kredisi/GSYH büyümesi = Δ(b - y), b = girişimci borcu (BIS)
-    ("exp4", "expect", None)]    # 12 ay sonrası TÜFE beklentisi (PKA, 2013 sonrası) = E_t Σ_{j=1..4} π_{t+j}
+    ("exp4", "expect", None),    # 12 ay sonrası TÜFE beklentisi (PKA, 2013 sonrası) = E_t Σ_{j=1..4} π_{t+j}
+    ("dprod", "prod", None)]     # sanayi, çalışılan saat başına üretim büyümesi (TÜİK, 2009 sonrası) = Δ(y - l)
 # Not: İstihdam büyümesi ("dl", "diff", "l") denendi; istihdamın GSYH ile zayıf birlikte hareketi (kayıt dışılık, tarım,
 # demografik trend) işsizlik/emek tutma kanalı olmayan modelde GSYH dalgalanmasının %82'sini verimlilik şokuna yüklediği
-# için kullanılmamıştır. Verimlilik şoku veriyle tanımlanamadığından parametreleri sabitlenmiştir (tr_dsge3.BASE).
+# için kullanılmamıştır. Verimlilik şoku bunun yerine sanayide çalışılan saat başına üretimle tanımlanır.
 OBSN = [o[0] for o in OBS]
 ME_SHARE = {"dy": 0.10, "dc": 0.10, "ystar": 0.10, "dinv": 0.10, "spread": 0.10,
             "dcred": 0.20,   # döviz cinsi kredilerin kur kaynaklı yeniden değerlemesi modelde yok -> daha büyük ölçüm hatası
-            "exp4": 0.10, "dl": 0.10}   # sabit ölçüm hatası (veri varyansı payı)
+            "exp4": 0.10, "dl": 0.10, "dprod": 0.30}   # sabit ölçüm hatası (veri varyansı payı)
 
 def load_obs(start, end):
     d = pd.read_csv(f"{MODEL_DIR}/data/evds_raw.csv", index_col=0)
@@ -45,6 +46,9 @@ def load_obs(start, end):
         "spread": (d["loan_rate"] - rate) / 4, "dcred": 100 * np.log(d["credit_gdp"]).diff(),
         "exp4": 100 * np.log(1 + d["exp12_cpi"] / 100), "dl": 100 * np.log(d["employment"]).diff()}, index=d.index)
     obs.loc["2014Q1", "dl"] = np.nan   # TÜİK 2014 yöntem revizyonu kaynaklı düzey kırılması
+    g = 100 * np.log(d["ind_prod_hour"]).diff()                 # mevsimsellikten arındırılmamış -> çeyrek ortalamaları çıkarılır
+    q_ = pd.Series([int(i_[-1]) for i_ in g.index], index=g.index)
+    obs["dprod"] = g - g.groupby(q_).transform("mean")   # dprod: sanayi verimliliği ekonominin tamamını temsil etmez (ölçüm hatası %30)
     obs = obs.loc[start:end]
     means = obs.mean()
     return obs - means, means
@@ -86,6 +90,8 @@ def default_priors():
         # v3: yatırım ve finansal hızlandırıcı
         ("Sk", 4.0, "gamma", 4.0, 1.5), ("nu", 0.05, "gamma", 0.05, 0.02), ("rho_mu", 0.7, "beta", 0.7, 0.1),
         ("sd_mu", 0.5, "invg", 0.5, 4.0), ("sd_nw", 0.5, "invg", 0.5, 4.0),
+        # döviz cinsi borç payı; verimlilik şoku (saat başına verimlilik gözleniyor)
+        ("phi_fx", 0.4, "beta", 0.4, 0.1), ("rho_a", 0.7, "beta", 0.7, 0.1), ("sd_a", 0.5, "invg", 0.5, 4.0),
     ]
 
 # ------------------------------------------------------------------ çözüm
@@ -148,6 +154,9 @@ class Estimator:
                 for off, sg in ((0, 1), (N, -1)):
                     Z[k, off + IX["qk"]] += sg * KN / (KN - 1); Z[k, off + IX["k"]] += sg * KN / (KN - 1)
                     Z[k, off + IX["n"]] -= sg / (KN - 1); Z[k, off + IX["y"]] -= sg
+                continue
+            if kind == "prod":     # işgücü verimliliği büyümesi: Δ(y - l)
+                Z[k, IX["y"]] += 1; Z[k, IX["l"]] -= 1; Z[k, N + IX["y"]] -= 1; Z[k, N + IX["l"]] += 1
                 continue
             if kind == "expect":   # E_t Σ_{j=1..4} π_{t+j} = (P + P² + P³ + P⁴)[π, :] z_t
                 Z[k, :N] = Psum[IX["pi"]]; continue
