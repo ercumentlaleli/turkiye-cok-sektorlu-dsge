@@ -40,7 +40,7 @@ def base_params():
     t = pd.read_csv(f"{MODEL_DIR}/s1_posterior_table.csv", index_col=0).post_mean.to_dict()
     import tr_dsge3
     p = dict(beta=0.985, phi=2.0, alpha=0.30, chi=0.01, eps=2.0, rho_u=0.5, sd_u=1.0, phi_y=0.0, phi_dy=0.0)
-    p.update({k: tr_dsge3.BASE[k] for k in ("kap", "delk", "aI", "gam_e", "KN")})
+    p.update({k: tr_dsge3.BASE[k] for k in ("kap", "delk", "aI", "gam_e", "KN", "rho_a", "sd_a")})   # sabit parametreler
     p.update(t)
     return p
 

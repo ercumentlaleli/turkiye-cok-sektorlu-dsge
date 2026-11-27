@@ -1,207 +1,207 @@
 {
  "karsi_olgusal": {
   "e_m|base": {
-   "cpi_h4": -2.253,
-   "cpi_h8": -2.564,
-   "cpi_h16": -2.717,
-   "y_cum8": -5.461,
-   "pi_peak": -2.502
+   "cpi_h4": -1.236,
+   "cpi_h8": -1.582,
+   "cpi_h16": -1.81,
+   "y_cum8": -4.194,
+   "pi_peak": -1.394
   },
   "e_m|nonet": {
-   "cpi_h4": -2.183,
-   "cpi_h8": -2.516,
-   "cpi_h16": -2.667,
-   "y_cum8": -5.606,
-   "pi_peak": -2.395
+   "cpi_h4": -1.191,
+   "cpi_h8": -1.546,
+   "cpi_h16": -1.781,
+   "y_cum8": -4.303,
+   "pi_peak": -1.331
   },
   "e_m|homog": {
-   "cpi_h4": -2.264,
-   "cpi_h8": -2.466,
-   "cpi_h16": -2.538,
-   "y_cum8": -3.559,
-   "pi_peak": -2.501
+   "cpi_h4": -1.309,
+   "cpi_h8": -1.629,
+   "cpi_h16": -1.758,
+   "y_cum8": -2.78,
+   "pi_peak": -1.344
   },
   "e_m|nonet_homog": {
-   "cpi_h4": -2.272,
-   "cpi_h8": -2.471,
-   "cpi_h16": -2.543,
-   "y_cum8": -3.502,
-   "pi_peak": -2.51
+   "cpi_h4": -1.317,
+   "cpi_h8": -1.638,
+   "cpi_h16": -1.768,
+   "y_cum8": -2.757,
+   "pi_peak": -1.351
   },
   "e_rstar|base": {
-   "cpi_h4": 0.184,
-   "cpi_h8": 0.17,
-   "cpi_h16": 0.19,
-   "y_cum8": 0.072,
-   "pi_peak": 0.314
+   "cpi_h4": 0.254,
+   "cpi_h8": 0.305,
+   "cpi_h16": 0.36,
+   "y_cum8": 0.069,
+   "pi_peak": 0.344
   },
   "e_rstar|nonet": {
-   "cpi_h4": 0.18,
-   "cpi_h8": 0.169,
-   "cpi_h16": 0.189,
-   "y_cum8": 0.115,
-   "pi_peak": 0.304
+   "cpi_h4": 0.243,
+   "cpi_h8": 0.297,
+   "cpi_h16": 0.356,
+   "y_cum8": 0.142,
+   "pi_peak": 0.329
   },
   "e_rstar|homog": {
-   "cpi_h4": 0.18,
-   "cpi_h8": 0.162,
-   "cpi_h16": 0.177,
-   "y_cum8": 0.042,
-   "pi_peak": 0.253
+   "cpi_h4": 0.249,
+   "cpi_h8": 0.299,
+   "cpi_h16": 0.339,
+   "y_cum8": -0.045,
+   "pi_peak": 0.282
   },
   "e_rstar|nonet_homog": {
-   "cpi_h4": 0.179,
-   "cpi_h8": 0.162,
-   "cpi_h16": 0.178,
-   "y_cum8": 0.064,
-   "pi_peak": 0.252
+   "cpi_h4": 0.247,
+   "cpi_h8": 0.296,
+   "cpi_h16": 0.338,
+   "y_cum8": -0.005,
+   "pi_peak": 0.279
   },
   "e_oil|base": {
-   "cpi_h4": 0.119,
-   "cpi_h8": 0.004,
-   "cpi_h16": -0.041,
-   "y_cum8": -1.197,
-   "pi_peak": 0.715
+   "cpi_h4": 0.236,
+   "cpi_h8": 0.149,
+   "cpi_h16": 0.084,
+   "y_cum8": -1.331,
+   "pi_peak": 0.83
   },
   "e_oil|nonet": {
-   "cpi_h4": 0.111,
-   "cpi_h8": 0.009,
-   "cpi_h16": -0.027,
-   "y_cum8": -0.978,
-   "pi_peak": 0.695
+   "cpi_h4": 0.209,
+   "cpi_h8": 0.135,
+   "cpi_h16": 0.086,
+   "y_cum8": -1.079,
+   "pi_peak": 0.792
   },
   "e_oil|homog": {
-   "cpi_h4": 0.093,
-   "cpi_h8": -0.008,
-   "cpi_h16": -0.049,
-   "y_cum8": -0.822,
-   "pi_peak": 0.275
+   "cpi_h4": 0.195,
+   "cpi_h8": 0.131,
+   "cpi_h16": 0.062,
+   "y_cum8": -1.094,
+   "pi_peak": 0.353
   },
   "e_oil|nonet_homog": {
-   "cpi_h4": 0.089,
-   "cpi_h8": -0.003,
-   "cpi_h16": -0.036,
-   "y_cum8": -0.652,
-   "pi_peak": 0.266
+   "cpi_h4": 0.181,
+   "cpi_h8": 0.123,
+   "cpi_h16": 0.067,
+   "y_cum8": -0.906,
+   "pi_peak": 0.337
   }
  },
  "dogrulama": {
   "e_m": {
-   "spearman": 0.42,
-   "p": 0.066,
-   "pearson": 0.5,
-   "ms_ort": -2.12,
-   "ssk_ort": -2.45
+   "spearman": 0.32,
+   "p": 0.173,
+   "pearson": 0.33,
+   "ms_ort": -1.21,
+   "ssk_ort": -1.2
   },
   "e_oil": {
-   "spearman": 0.52,
-   "p": 0.02,
-   "pearson": 0.85,
-   "ms_ort": 0.25,
-   "ssk_ort": 0.39
+   "spearman": 0.8,
+   "p": 0.0,
+   "pearson": 0.88,
+   "ms_ort": 0.36,
+   "ssk_ort": 0.34
   }
  },
  "sektorel_top": {
   "C10-12": {
    "ad": "Gıda-içecek-tütün",
-   "cpi_h4": 0.0099,
-   "cpi_h4_agyok": 0.0109,
-   "dogrudan": 0.0144,
-   "ag_carpani": 0.6876,
-   "gsyh_cum8": -0.0845,
+   "cpi_h4": 0.0196,
+   "cpi_h4_agyok": 0.0209,
+   "dogrudan": 0.0157,
+   "ag_carpani": 1.2528,
+   "gsyh_cum8": -0.0877,
    "tuketim_payi": 0.1308,
    "theta": 0.605
   },
   "A": {
    "ad": "Tarım",
-   "cpi_h4": 0.0075,
-   "cpi_h4_agyok": 0.0047,
-   "dogrudan": 0.0058,
-   "ag_carpani": 1.2859,
-   "gsyh_cum8": -0.068,
+   "cpi_h4": 0.0155,
+   "cpi_h4_agyok": 0.0101,
+   "dogrudan": 0.0068,
+   "ag_carpani": 2.2697,
+   "gsyh_cum8": -0.0699,
    "tuketim_payi": 0.0608,
    "theta": 0.467
   },
   "D35": {
    "ad": "Elektrik-gaz",
-   "cpi_h4": 0.0074,
-   "cpi_h4_agyok": 0.0038,
-   "dogrudan": 0.0098,
-   "ag_carpani": 0.7519,
-   "gsyh_cum8": -0.0641,
+   "cpi_h4": 0.0143,
+   "cpi_h4_agyok": 0.0075,
+   "dogrudan": 0.0097,
+   "ag_carpani": 1.4747,
+   "gsyh_cum8": -0.0676,
    "tuketim_payi": 0.0452,
    "theta": 0.544
   },
   "G": {
    "ad": "Ticaret",
-   "cpi_h4": 0.0059,
-   "cpi_h4_agyok": 0.0062,
-   "dogrudan": 0.0091,
-   "ag_carpani": 0.646,
-   "gsyh_cum8": -0.059,
+   "cpi_h4": 0.0115,
+   "cpi_h4_agyok": 0.0118,
+   "dogrudan": 0.0092,
+   "ag_carpani": 1.2552,
+   "gsyh_cum8": -0.064,
    "tuketim_payi": 0.1491,
    "theta": 0.82
   },
-  "I": {
-   "ad": "Konaklama-yiyecek",
-   "cpi_h4": 0.0049,
-   "cpi_h4_agyok": 0.0064,
-   "dogrudan": 0.0086,
-   "ag_carpani": 0.5703,
-   "gsyh_cum8": -0.0417,
-   "tuketim_payi": 0.1003,
-   "theta": 0.748
-  },
   "C13-15": {
    "ad": "Tekstil-giyim-deri",
-   "cpi_h4": 0.0049,
-   "cpi_h4_agyok": 0.0047,
-   "dogrudan": 0.0079,
-   "ag_carpani": 0.6148,
-   "gsyh_cum8": -0.0488,
+   "cpi_h4": 0.0108,
+   "cpi_h4_agyok": 0.01,
+   "dogrudan": 0.0084,
+   "ag_carpani": 1.292,
+   "gsyh_cum8": -0.0495,
    "tuketim_payi": 0.0599,
    "theta": 0.468
   },
+  "I": {
+   "ad": "Konaklama-yiyecek",
+   "cpi_h4": 0.0093,
+   "cpi_h4_agyok": 0.0118,
+   "dogrudan": 0.0086,
+   "ag_carpani": 1.0863,
+   "gsyh_cum8": -0.0442,
+   "tuketim_payi": 0.1003,
+   "theta": 0.748
+  },
   "H": {
    "ad": "Ulaştırma",
-   "cpi_h4": 0.0029,
-   "cpi_h4_agyok": 0.0031,
-   "dogrudan": 0.0055,
-   "ag_carpani": 0.5222,
-   "gsyh_cum8": -0.0333,
+   "cpi_h4": 0.0059,
+   "cpi_h4_agyok": 0.006,
+   "dogrudan": 0.0052,
+   "ag_carpani": 1.1257,
+   "gsyh_cum8": -0.0366,
    "tuketim_payi": 0.0929,
    "theta": 0.844
   },
   "L": {
    "ad": "Gayrimenkul",
-   "cpi_h4": 0.0018,
-   "cpi_h4_agyok": 0.0023,
-   "dogrudan": 0.0042,
-   "ag_carpani": 0.4379,
-   "gsyh_cum8": -0.0227,
+   "cpi_h4": 0.0039,
+   "cpi_h4_agyok": 0.0047,
+   "dogrudan": 0.004,
+   "ag_carpani": 0.9705,
+   "gsyh_cum8": -0.025,
    "tuketim_payi": 0.101,
    "theta": 0.875
   },
   "C19": {
    "ad": "Rafine petrol",
-   "cpi_h4": 0.0012,
-   "cpi_h4_agyok": 0.0015,
-   "dogrudan": 0.0015,
-   "ag_carpani": 0.7856,
-   "gsyh_cum8": -0.0193,
+   "cpi_h4": 0.0033,
+   "cpi_h4_agyok": 0.0037,
+   "dogrudan": 0.0016,
+   "ag_carpani": 2.0629,
+   "gsyh_cum8": -0.0185,
    "tuketim_payi": 0.0235,
    "theta": 0.163
   },
   "OQ": {
    "ad": "Kamu-eğitim-sağlık",
-   "cpi_h4": 0.0011,
-   "cpi_h4_agyok": 0.0014,
-   "dogrudan": 0.0022,
-   "ag_carpani": 0.5032,
-   "gsyh_cum8": -0.0112,
+   "cpi_h4": 0.0022,
+   "cpi_h4_agyok": 0.0026,
+   "dogrudan": 0.0021,
+   "ag_carpani": 1.059,
+   "gsyh_cum8": -0.0122,
    "tuketim_payi": 0.0342,
    "theta": 0.825
   }
  },
- "ag_payi_ortalama": -0.6
+ "ag_payi_ortalama": 0.21
 }
