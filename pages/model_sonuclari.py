@@ -78,13 +78,13 @@ with tabs[5]:
     st.dataframe(pd.read_csv(MODEL_DIR / "data" / "io" / "calvo_sector.csv").round(3), hide_index=True, width="stretch")
 
 with tabs[6]:
-    st.markdown("**Markov rejim değişkenli DSGE (2006Ç1–2026Ç2).** İki bağımsız zincir: para politikası (aktif/pasif) ve fiyatlama "
+    st.markdown("**Markov rejim değişkenli DSGE (2006Ç1–2026Ç2).** İki bağımsız zincir: para politikası (sistematik/oynak) ve fiyatlama "
                 "(normal/yüksek enflasyon); toplam dört rejim. Farmer-Waggoner-Zha çözümü ve Kim filtresiyle tahmin edilmiştir. "
                 "Ajanlar rejim değişimi olasılığını beklentilerine yansıtır. Salgın çeyrekleri (2020Ç2–Ç4) eksik veri sayılmıştır.")
     pm = MODEL_DIR / "ms_summary.json"
     if pm.exists():
         ms = json.load(open(pm, encoding="utf-8"))
-        rp = pd.DataFrame(ms["rejim_olasiligi_donem_ort"]).T.rename(columns={"pasif_politika": "Pasif politika olasılığı",
+        rp = pd.DataFrame(ms["rejim_olasiligi_donem_ort"]).T.rename(columns={"oynak_politika": "Oynak politika olasılığı",
                                                                             "yuksek_enflasyon": "Yüksek enflasyon olasılığı"})
         st.markdown("**Dönem ortalaması rejim olasılıkları**")
         st.dataframe(rp, width="stretch")
@@ -92,6 +92,6 @@ with tabs[6]:
         img("ms_2_rejim_irf.png", "Rejime göre etki-tepkiler")
         t = pd.read_csv(MODEL_DIR / "ms_posterior_table.csv").rename(columns={"Unnamed: 0": "Parametre", "prior": "Önsel",
             "prior_mean": "Önsel ort.", "post_mean": "Posterior ort.", "p05": "%5", "p95": "%95", "rhat": "R-hat"})
-        st.markdown("**Posterior tablo** (A2_: pasif politika rejimi; B2_: yüksek enflasyon rejimi; off_: rejime özgü nominal sabitler; "
+        st.markdown("**Posterior tablo** (A2_: oynak politika rejimi; B2_: yüksek enflasyon rejimi; off_: rejime özgü nominal sabitler; "
                     "pXX: rejimde kalma olasılıkları)")
         st.dataframe(t.round(3), hide_index=True, width="stretch")

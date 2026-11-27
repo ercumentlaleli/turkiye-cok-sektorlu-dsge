@@ -32,7 +32,7 @@ for th in sel:
     PA.append(filt[:, 2] + filt[:, 3]); PB.append(filt[:, 1] + filt[:, 3])
 PA, PB = np.array(PA), np.array(PB); dates = list(E.Ydf.index); x = np.arange(len(dates))
 fig, axes = plt.subplots(2, 1, figsize=(11, 5.6), sharex=True)
-for ax, arr, col, lab in ((axes[0], PA, BLUE, "Pasif para politikası rejimi"), (axes[1], PB, ORANGE, "Yüksek enflasyon fiyatlama rejimi")):
+for ax, arr, col, lab in ((axes[0], PA, BLUE, "Oynak (takdire dayalı) para politikası rejimi"), (axes[1], PB, ORANGE, "Yüksek enflasyon fiyatlama rejimi")):
     ax.fill_between(x, *np.percentile(arr, [16, 84], 0), color=col, alpha=0.2, lw=0)
     ax.plot(x, arr.mean(0), color=col, lw=2); ax.set_ylim(-0.02, 1.02); ax.set_ylabel("Olasılık")
     ax.set_title(lab, loc="left", color=INK, fontsize=10.5)
@@ -44,7 +44,7 @@ fig.suptitle("Rejim değişkenli model: filtrelenmiş rejim olasılıkları (pos
 fig.tight_layout(rect=(0, 0, 1, 0.94)); fig.savefig("ms_1_rejim_olasiliklari.png", dpi=150); plt.close(fig)
 
 # rejime göre etki-tepkiler (rejimde kalındığı varsayımıyla; beklentiler rejim değişimini içerir)
-H = 13; LABS = ["Aktif politika, normal fiyatlama", "Aktif politika, yüksek enflasyon", "Pasif politika, normal fiyatlama", "Pasif politika, yüksek enflasyon"]
+H = 13; LABS = ["Sistematik politika, normal fiyatlama", "Sistematik politika, yüksek enflasyon", "Oynak politika, normal fiyatlama", "Oynak politika, yüksek enflasyon"]
 COLS = [BLUE, ORANGE, AQUA, GRAY]
 SH = [("e_m", "Faiz +1 puan"), ("e_rstar", "Kur primi: TL reel %1 değer kaybı"), ("e_oil", "Brent +%10")]
 VS = [("pi", 4, "TÜFE enfl. (yıllık puan)"), ("y", 1, "GSYH (%)"), ("i", 4, "Politika faizi (yıllık puan)")]
@@ -83,7 +83,7 @@ fig.tight_layout(rect=(0, 0, 1, 0.95)); fig.savefig("ms_2_rejim_irf.png", dpi=15
 
 per = {"2006Q1-2019Q4": slice("2006Q1", "2019Q4"), "2021Q1-2023Q2": slice("2021Q1", "2023Q2"), "2023Q3-2026Q2": slice("2023Q3", "2026Q2")}
 idx = pd.Index(dates)
-regp = {k: {"pasif_politika": round(float(PA.mean(0)[idx.slice_indexer(v.start, v.stop)].mean()), 2),
+regp = {k: {"oynak_politika": round(float(PA.mean(0)[idx.slice_indexer(v.start, v.stop)].mean()), 2),
             "yuksek_enflasyon": round(float(PB.mean(0)[idx.slice_indexer(v.start, v.stop)].mean()), 2)} for k, v in per.items()}
 summ = {"rejim_olasiligi_donem_ort": regp, "irf": summ_irf, "rhat_max": round(float(R.max()), 3),
         "pA": dict(zip(dates, PA.mean(0).round(3).tolist())), "pB": dict(zip(dates, PB.mean(0).round(3).tolist()))}

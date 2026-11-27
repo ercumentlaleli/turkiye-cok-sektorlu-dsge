@@ -38,6 +38,7 @@ model/
   calvo_est.py            Sektörel Calvo parametresi tahmini
   ms_model.py             32 sektörlü ağlı model (159 denklem)
   ms_experiments.py       Karşı-olgusal deneyler ve gezgin verisi (explorer_data.json)
+  msdsge.py, step_ms.py, ms_results.py  Markov rejim değişkenli DSGE (2006–2026; Farmer-Waggoner-Zha çözümü, Kim filtresi)
   data/                   EVDS ve dış veriler (financial.csv: reel yatırım ve ticari kredi faizi), data/io/ altında TÜİK girdi-çıktı tabloları
 docs/                     Teknik not (56 sayfa) ve şok tanımlaması eki (Word)
 ```
@@ -51,6 +52,7 @@ Komutlar depo kökünden çalıştırılır; tüm yollar `model/` klasörüne g�
 3. `python model/ssk.py` ve ardından `python model/ssk_fig.py`: sektörel uydu denklemleri.
 4. `python model/lpiv.py` ve ardından `python model/compare.py`: LP-IV sağlaması.
 5. Sırayla `python model/parse_io.py`, `io_agg.py`, `network.py`, `calvo_est.py`, `ms_experiments.py`, `ms_bands.py`: çok sektörlü model ve belirsizlik bantları.
+6. `python model/step_ms.py mode`, dört zincir için `python model/step_ms.py chain <1-4> 16000` ve `python model/ms_results.py`: rejim değişkenli tahmin. Zincirler `.gitignore`'dadır; inceltilmiş çekilişler `ms_draws.npy`'dedir.
 
 ## Başlıca sonuçlar
 
@@ -58,6 +60,7 @@ Komutlar depo kökünden çalıştırılır; tüm yollar `model/` klasörüne g�
 - **Şokların payı (4 çeyrek):** TÜFE dalgalanmasının %44'ü yerli maliyet, %19'u kur primi, %14'ü para politikası şoklarından gelir. GSYH'de yatırım etkinliği %29, yerli maliyet %20, yurt içi talep %19, para politikası %12, verimlilik %10 paya sahiptir.
 - **Kur primi ve döviz borcu:** Firma borcunun yaklaşık %39'u döviz cinsidir; bu kanalla kur primi şoku daraltıcıdır (1 standart sapmalık şokta GSYH zirve etkisi −%0,62, yatırım −%4,5).
 - **2023–2026 rejimi:** Yerli fiyat katılığı 0,86'dan 0,54'e düşer, yerli maliyet şoklarının oynaklığı yaklaşık üç katına çıkar; faiz şokunun etki anındaki dezenflasyon etkisi yaklaşık 1,6 puandır.
+- **Rejim değişkenli tahmin (2006–2026):** Yüksek enflasyon fiyatlama rejimi 2022Ç1'den bu yana sürmektedir (fiyat katılığı 0,57, yerli maliyet şoku oynaklığı yaklaşık 4,5 kat). İkinci politika rejimi pasif değil, kuraldan büyük sapmaların görüldüğü oynak bir rejimdir (enflasyon tepkisi 1,06, faiz şoku oynaklığı yaklaşık 7 kat); olasılığı 2021Ç4–2024Ç2'de 1'e yakın, 2026Ç2'de yaklaşık 0,2'dir. Yüksek enflasyon rejiminde faiz şokunun etki anındaki dezenflasyon etkisi 2,6–3,0 puana çıkar, GSYH maliyeti azalır.
 - **Fiyat katılığı heterojenliği:** Fedakârlık oranını yaklaşık %50 artırır (1,90'a karşı 1,26). Girdi-çıktı ağının makro şoklara etkisi sınırlıdır; asıl rolü girdi sağlayıcı sektörlerdeki maliyet şoklarını büyütmesidir.
 - **Doğrulama:** SSK ile LP-IV, faiz şokunun 4 çeyrekteki fiyat etkisinde sıralamada ρ = 0,52, işarette %96 uyumludur; sanayi üretiminde 8 çeyrekte sıralama da örtüşür (ρ = 0,40). LP-IV'deki büyük gecikmeli üretim etkisinin büyüklüğü (8 çeyrekte −%4,2) yapısal modelde yakalanmamaktadır.
 
